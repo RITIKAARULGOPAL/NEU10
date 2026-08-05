@@ -1,0 +1,103 @@
+<section class="slide" id="s15" data-act="V"
+         data-title="Neu10 changes when problems get solved" data-dwell="5200">
+  <div class="slide-inner">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--neu">Act V &middot; The case</p>
+      <h1 class="h1">Neu10 changes when problems get solved.</h1>
+    </div>
+
+    <!-- Beats 2-4 — one turn per click. Each rule draws itself across the
+         slide, and the deck's two colours finally meet on the same line. -->
+    <div class="turns">
+
+      <div class="turn" data-beat="2">
+        <p class="from">Instead of discovering issues during documentation...</p>
+        <p class="to"><i class="tie" aria-hidden="true"></i>discover them while
+          designing.</p>
+      </div>
+
+      <div class="turn" data-beat="3">
+        <p class="from">Instead of resolving clashes during execution...</p>
+        <p class="to"><i class="tie" aria-hidden="true"></i>resolve them before
+          construction begins.</p>
+      </div>
+
+      <div class="turn" data-beat="4">
+        <p class="from">Instead of redrawing information...</p>
+        <p class="to"><i class="tie" aria-hidden="true"></i>reuse one intelligent
+          model throughout the project.</p>
+      </div>
+
+    </div>
+
+    <p class="close h-display" data-beat="5">One connected workflow.<br>
+      <span class="hi-neu">From scan to documentation.</span></p>
+
+  </div>
+</section>
+
+<style>
+#s15 .slide-inner { gap: var(--sp-6); }
+
+/* ---- the three turns: loss half, hairline, neu half ---- */
+#s15 .turns { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+#s15 .turn {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(14px, 1.8vw, 30px);
+  align-items: baseline;
+  padding-top: var(--sp-2);
+}
+#s15 .turn::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  /* The rule itself carries the shift, so the whole row travels from the old
+     world to the new one — not just the short connector in the middle. */
+  background: linear-gradient(90deg, var(--loss-line), var(--neu-line));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .85s var(--ease-out) .06s;
+}
+#s15 .turn.is-on::before { transform: none; }
+
+#s15 .from {
+  font-size: var(--t-lede);
+  line-height: 1.45;
+  color: var(--loss);
+}
+#s15 .to {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -.016em;
+  color: var(--neu-bright);
+}
+
+/* the connector is the thesis: loss hairline resolving into neu */
+#s15 .tie {
+  display: inline-block; position: relative;
+  width: clamp(24px, 3vw, 52px); height: 1px;
+  background: linear-gradient(90deg, var(--loss-line), var(--neu));
+  vertical-align: .3em; margin-right: .42em;
+}
+#s15 .tie::after {
+  content: ""; position: absolute; right: -1px; top: -3px;
+  border-left: 5px solid var(--neu);
+  border-top: 3px solid transparent; border-bottom: 3px solid transparent;
+}
+
+#s15 .tag { vertical-align: middle; margin-left: clamp(8px, .9vw, 16px); }
+
+/* ---- the close ---- */
+#s15 .close { color: var(--ink); }
+
+@media (max-width: 900px) {
+  #s15 .turn { grid-template-columns: 1fr; gap: var(--sp-1); }
+  #s15 .tie { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #s15 .turn::before { transition-duration: .01ms; }
+}
+</style>

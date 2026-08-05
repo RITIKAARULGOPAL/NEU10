@@ -1,0 +1,388 @@
+<section class="slide" id="s06" data-act="III"
+         data-title="The model understands what you're designing" data-dwell="4600">
+  <div class="slide-inner is-wide">
+    <div class="split">
+
+      <div class="stack-lg">
+        <div class="stack">
+          <p class="eyebrow eyebrow--neu">Act III &middot; The shift</p>
+          <h1 class="h1" style="max-width:20ch">The model understands<br>what you&rsquo;re designing</h1>
+        </div>
+
+        <div class="stack">
+          <p class="lede">Traditional CAD stores <span class="hi-loss">lines.</span></p>
+          <p class="lede" data-beat="2">
+            Neu10 stores <span class="hi-neu">walls. Doors. Columns.
+            Furniture. Ceilings. Services.</span>
+          </p>
+        </div>
+
+        <p class="lede" data-beat="4" style="max-width:40ch">
+          That&rsquo;s why <span class="hi">documentation, quantities and
+          coordination</span> become automatic.
+        </p>
+      </div>
+
+      <div class="stack">
+        <div class="row" style="justify-content:space-between">
+          <div class="modes" data-no-advance>
+            <button class="ctl" data-mode="cad">CAD</button>
+            <button class="ctl" data-mode="bim">NEU10</button>
+          </div>
+          <p class="hint">Click any element in the plan</p>
+        </div>
+
+        <div class="plan-wrap">
+          <svg class="plan" viewBox="0 0 900 400" role="img"
+               aria-label="Schematic office fit-out plan">
+            <!-- DOM order = hit-test priority (last is topmost). The shell
+                 rect covers the whole plan, so it must come first. -->
+
+            <!-- shell -->
+            <g class="el" data-cat="Wall"
+               data-cad="4 LINES · 2440 mm each · layer A-WALL"
+               data-is="Core wall W-01 · 230 mm blockwork, skim finish"
+               data-belongs="Building shell · Level 3 · full floor plate"
+               data-relates="Bounds all rooms · hosts 2 doors · carries no services">
+              <rect x="24" y="24" width="852" height="352" />
+              <text class="lbl" x="32" y="366">WALL</text>
+            </g>
+
+            <!-- services / duct run -->
+            <g class="el" data-cat="Services"
+               data-cad="POLYLINE · 5 segments · 6420 mm · layer M-DUCT"
+               data-is="Supply duct run SD-01 · 300 × 200 mm galvanised"
+               data-belongs="Ceiling void · Level 3 · Open workspace"
+               data-relates="Feeds VAV-02 · crosses beam B-07 · above ceiling grid">
+              <rect class="hit" x="40" y="52" width="472" height="24" />
+              <rect class="hit" x="488" y="64" width="24" height="60" />
+              <polyline points="46,64 500,64 500,120" />
+              <text class="lbl" x="52" y="54">SERVICES</text>
+            </g>
+
+            <!-- ceiling grid (meeting room) -->
+            <g class="el" data-cat="Ceiling"
+               data-cad="18 LINES · layer A-CLG"
+               data-is="Ceiling grid CG-02 · 600 × 600 mineral fibre, 2800 AFF"
+               data-belongs="Meeting Room 02 · Level 3"
+               data-relates="Carried by GP-04 · penetrated by SD-01 · sets service zone depth">
+              <rect class="hit" x="560" y="192" width="298" height="50" />
+              <g class="grid-lines">
+                <line x1="566" y1="210" x2="850" y2="210" />
+                <line x1="566" y1="228" x2="850" y2="228" />
+                <line x1="608" y1="198" x2="608" y2="240" />
+                <line x1="680" y1="198" x2="680" y2="240" />
+                <line x1="752" y1="198" x2="752" y2="240" />
+                <line x1="824" y1="198" x2="824" y2="240" />
+              </g>
+              <text class="lbl" x="566" y="190">CEILING</text>
+            </g>
+
+            <!-- furniture: meeting table + desks -->
+            <g class="el" data-cat="Furniture"
+               data-cad="12 RECTANGLES · layer A-FURN"
+               data-is="Meeting table MT-02 · 2400 × 1200 mm, seats 8"
+               data-belongs="Meeting Room 02 · Level 3"
+               data-relates="Needs 750 mm clearance · under light fitting L-11 · counts to seat total">
+              <rect x="620" y="80" width="200" height="100" rx="3" />
+              <rect x="80"  y="176" width="120" height="52" rx="2" />
+              <rect x="80"  y="252" width="120" height="52" rx="2" />
+              <rect x="330" y="176" width="120" height="52" rx="2" />
+              <rect x="330" y="252" width="120" height="52" rx="2" />
+              <text class="lbl" x="620" y="72">FURNITURE</text>
+            </g>
+
+            <!-- columns -->
+            <g class="el" data-cat="Column"
+               data-cad="RECTANGLE · 22 × 22 · layer S-COLS"
+               data-is="Column C-02 · 600 × 600 mm RCC, structural"
+               data-belongs="Structural grid B-3 · Level 3 · full height"
+               data-relates="Abuts partition GP-04 · restricts duct route · fixed, non-movable">
+              <rect x="240" y="132" width="26" height="26" />
+              <rect x="240" y="286" width="26" height="26" />
+              <text class="lbl" x="234" y="124">COLUMN</text>
+            </g>
+
+            <!-- glass partition (pre-selected) -->
+            <g class="el is-sel" data-cat="Partition"
+               data-cad="LINE · 3400 mm · layer A-PART"
+               data-is="Glass partition GP-04 · 12 mm toughened, alu frame"
+               data-belongs="Meeting Room 02 · Level 3"
+               data-relates="Hosts door D-04 · carries ceiling grid · abuts column C-02">
+              <rect class="hit" x="528" y="24" width="24" height="228" />
+              <rect class="hit" x="552" y="242" width="324" height="22" />
+              <line x1="540" y1="24" x2="540" y2="150" />
+              <line x1="540" y1="196" x2="540" y2="252" />
+              <line x1="540" y1="252" x2="876" y2="252" />
+              <text class="lbl" x="548" y="58">PARTITION</text>
+            </g>
+
+            <!-- door -->
+            <g class="el" data-cat="Door"
+               data-cad="2 LINES + 1 ARC · layer A-DOOR"
+               data-is="Door D-04 · 900 × 2100 mm glazed, single leaf"
+               data-belongs="Meeting Room 02 · in partition GP-04"
+               data-relates="Hosted by GP-04 · swings into workspace · 900 mm clear">
+              <rect class="hit" x="488" y="142" width="62" height="62" />
+              <line x1="540" y1="150" x2="540" y2="196" />
+              <line x1="540" y1="196" x2="496" y2="196" />
+              <path d="M496,196 A44,44 0 0,0 540,150" />
+              <text class="lbl" x="452" y="214">DOOR</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="insp">
+          <div class="insp-head">
+            <span class="insp-mode">CAD</span>
+            <span class="insp-name">Selected element</span>
+          </div>
+          <div class="insp-rows">
+            <div class="insp-row" data-row="is">
+              <span class="insp-key">IS</span>
+              <span class="insp-val" data-f="is"></span>
+            </div>
+            <div class="insp-row" data-row="belongs">
+              <span class="insp-key">BELONGS</span>
+              <span class="insp-val" data-f="belongs"></span>
+            </div>
+            <div class="insp-row" data-row="relates">
+              <span class="insp-key">RELATES</span>
+              <span class="insp-val" data-f="relates"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="knows" data-beat="3">
+          <p class="mono knows-head">Every object knows</p>
+          <div class="knows-row stagger">
+            <span style="--i:0">what it is</span>
+            <span style="--i:1">where it belongs</span>
+            <span style="--i:2">how it relates to everything around it</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+#s06 .modes { display: flex; gap: 4px; }
+#s06 .plan-wrap {
+  background: var(--bg-lift);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: clamp(8px, 1vw, 16px);
+}
+#s06 .plan { width: 100%; height: auto; display: block; }
+
+/* ---- CAD reading: uniform, meaningless lines ---- */
+#s06 .plan .el line,
+#s06 .plan .el rect,
+#s06 .plan .el path,
+#s06 .plan .el polyline {
+  fill: none;
+  stroke: var(--ink-4);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  transition: stroke .45s var(--ease), fill .45s var(--ease),
+              stroke-width .25s var(--ease);
+}
+#s06 .plan .lbl {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .16em;
+  fill: var(--neu); opacity: 0;
+  transition: opacity .45s var(--ease);
+  pointer-events: none;
+}
+/* Give area shapes a real hit target; stroke-only groups get .hit rects. */
+#s06 .plan .el { cursor: pointer; }
+#s06 .plan .el rect,
+#s06 .plan .el polyline,
+#s06 .plan .el path { pointer-events: all; }
+#s06 .plan .el .hit {
+  fill: transparent; stroke: none; pointer-events: all;
+}
+#s06 .plan.is-bim .el .hit { fill: transparent; stroke: none; }
+#s06 .plan .el:hover line,
+#s06 .plan .el:hover rect,
+#s06 .plan .el:hover path,
+#s06 .plan .el:hover polyline { stroke: var(--ink-2); }
+
+/* ---- Neu10 reading: categorised objects that name themselves ---- */
+#s06 .plan.is-bim .el line,
+#s06 .plan.is-bim .el path,
+#s06 .plan.is-bim .el polyline { stroke: var(--neu); }
+#s06 .plan.is-bim .el rect {
+  stroke: var(--neu);
+  fill: var(--neu-dim);
+}
+#s06 .plan.is-bim .lbl { opacity: .85; }
+#s06 .plan.is-bim .el.is-sel line,
+#s06 .plan.is-bim .el.is-sel rect,
+#s06 .plan.is-bim .el.is-sel path,
+#s06 .plan.is-bim .el.is-sel polyline {
+  stroke: var(--neu-bright); stroke-width: 2.6;
+}
+#s06 .plan.is-bim .el.is-sel .lbl { opacity: 1; fill: var(--neu-bright); }
+#s06 .plan .el.is-sel line,
+#s06 .plan .el.is-sel rect,
+#s06 .plan .el.is-sel path,
+#s06 .plan .el.is-sel polyline { stroke: var(--ink-2); stroke-width: 2.4; }
+#s06 .plan .grid-lines line { stroke-dasharray: 2 3; }
+
+/* ---- inspector ---- */
+#s06 .insp {
+  background: var(--bg-lift);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: var(--sp-3) var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+#s06 .insp-head {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding-bottom: var(--sp-2); border-bottom: 1px solid var(--rule);
+}
+#s06 .insp-mode {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .18em; color: var(--loss);
+  border: 1px solid var(--loss-line); background: var(--loss-dim);
+  padding: .2em .55em; border-radius: 2px;
+}
+#s06 .insp.is-bim .insp-mode {
+  color: var(--neu); border-color: var(--neu-line); background: var(--neu-dim);
+}
+#s06 .insp-name {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .1em; color: var(--ink-2); text-transform: uppercase;
+}
+#s06 .insp-rows { display: flex; flex-direction: column; }
+#s06 .insp-row {
+  display: grid;
+  grid-template-columns: 6.2em 1fr;
+  gap: var(--sp-3);
+  padding: .42em 0;
+  align-items: baseline;
+  position: relative;
+}
+#s06 .insp-row + .insp-row { border-top: 1px solid var(--rule); }
+#s06 .insp-key {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .16em; color: var(--ink-4);
+}
+#s06 .insp-val {
+  font-size: var(--t-small); color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+#s06 .insp.is-cad .insp-val--empty { color: var(--ink-4); }
+
+/* beat 3 — the three things every object knows, in the same order as
+   the inspector rows above so the mapping is read without a caption. */
+#s06 .knows { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s06 .knows-head { color: var(--neu); }
+#s06 .knows-row {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 20px);
+}
+#s06 .knows-row span {
+  font-size: var(--t-small); color: var(--ink); line-height: 1.3;
+  padding-top: .55em; border-top: 1px solid var(--neu-line);
+}
+
+@media (max-width: 1000px) {
+  #s06 .split { grid-template-columns: 1fr; gap: var(--sp-4); }
+}
+/* The plan used to be display:none here. It is the whole point of the slide,
+   so on a phone it stays and gets the full card width instead. */
+@media (max-width: 820px) {
+  #s06 .plan { min-height: 150px; }
+  #s06 .insp-row { grid-template-columns: 1fr; gap: .1em; }
+  #s06 .insp-key { color: var(--neu); }
+  #s06 .knows-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
+  #s06 .hint { display: none; }          /* the toggle is self-evident by touch */
+  #s06 .modes { width: 100%; }
+  #s06 .modes .ctl { flex: 1 1 0; justify-content: center; }
+}
+</style>
+
+<script>
+Neu10.register('s06', (function () {
+  var CAD_ROWS = {
+    is: null,                                  // filled from data-cad
+    belongs: 'not stored — the drawing does not know',
+    relates: 'not stored — relationships live in the reader’s head'
+  };
+
+  function fields(g) {
+    return {
+      cat: g.getAttribute('data-cat'),
+      cad: g.getAttribute('data-cad'),
+      is: g.getAttribute('data-is'),
+      belongs: g.getAttribute('data-belongs'),
+      relates: g.getAttribute('data-relates')
+    };
+  }
+
+  function paint(el) {
+    var plan = el.querySelector('.plan');
+    var insp = el.querySelector('.insp');
+    var bim = plan.classList.contains('is-bim');
+    var sel = el.querySelector('.plan .el.is-sel') || el.querySelector('.plan .el');
+    var f = fields(sel);
+
+    insp.classList.toggle('is-bim', bim);
+    insp.classList.toggle('is-cad', !bim);
+    insp.querySelector('.insp-mode').textContent = bim ? 'NEU10' : 'CAD';
+    insp.querySelector('.insp-name').textContent = bim ? f.cat : 'geometry';
+
+    var vals = bim
+      ? { is: f.is, belongs: f.belongs, relates: f.relates }
+      : { is: f.cad, belongs: CAD_ROWS.belongs, relates: CAD_ROWS.relates };
+
+    ['is', 'belongs', 'relates'].forEach(function (k) {
+      var node = insp.querySelector('[data-f="' + k + '"]');
+      node.textContent = vals[k];
+      node.classList.toggle('insp-val--empty', !bim && k !== 'is');
+    });
+
+    el.querySelectorAll('.modes .ctl').forEach(function (b) {
+      b.classList.toggle('is-on', (b.dataset.mode === 'bim') === bim);
+    });
+  }
+
+  function setMode(el, bim) {
+    el.querySelector('.plan').classList.toggle('is-bim', bim);
+    paint(el);
+  }
+
+  return {
+    enter: function (el) {
+      if (el.dataset.wired !== '1') {
+        el.dataset.wired = '1';
+        el.querySelectorAll('.plan .el').forEach(function (g) {
+          g.addEventListener('click', function (e) {
+            e.stopPropagation();
+            el.querySelectorAll('.plan .el').forEach(function (o) { o.classList.remove('is-sel'); });
+            g.classList.add('is-sel');
+            paint(el);
+          });
+        });
+        el.querySelectorAll('.modes .ctl').forEach(function (b) {
+          b.addEventListener('click', function (e) {
+            e.stopPropagation();
+            setMode(el, b.dataset.mode === 'bim');
+          });
+        });
+      }
+      paint(el);
+    },
+    beat: function (el, n) {
+      setMode(el, n >= 2);
+    },
+    leave: function (el) {
+      setMode(el, false);
+    }
+  };
+})());
+</script>

@@ -1,0 +1,696 @@
+/* ============================================================
+   NEU10 DECK — DESIGN SYSTEM
+   Single source of truth. Slide fragments must not redefine
+   colour, type scale or spacing. Slide-specific CSS must be
+   namespaced under its slide id (e.g. #s02 .foo).
+   ============================================================ */
+
+:root {
+  /* ---- surface ---- */
+  --bg:          #08090C;
+  --bg-lift:     #10121A;
+  --bg-lift-2:   #171A24;
+  --rule:        rgba(255,255,255,.085);
+  --rule-strong: rgba(255,255,255,.16);
+  /* neutral fills — slides must use these rather than re-typing rgba() */
+  --fill-subtle: rgba(255,255,255,.05);
+  --bg-lift-fade: rgba(16,18,26,.2);
+
+  /* ---- ink ---- */
+  --ink:    #EDEEF2;
+  --ink-2:  #99A0AE;
+  --ink-3:  #5A6273;
+  --ink-4:  #3A4150;
+
+  /* ---- semantic accents ------------------------------------
+     LOSS  = the old disconnected world, cost, rework, lateness
+     NEU10= one model, resolution, forward motion
+     Every slide in Acts I-II leans LOSS. Acts III-V lean NEU10.
+     This pairing carries the argument, so do not mix freely.  */
+  --loss:        #E4633C;
+  --loss-bright: #FF8A62;
+  --loss-dim:    rgba(228,99,60,.13);
+  --loss-line:   rgba(228,99,60,.34);
+
+  --neu:        #6B9BFF;
+  --neu-bright: #A9C5FF;
+  --neu-dim:    rgba(107,155,255,.13);
+  --neu-line:   rgba(107,155,255,.34);
+
+  /* ---- brand ----------------------------------------------------
+     --brand is the exact violet from the NEU10 logo. It is very dark, so on
+     this near-black deck it disappears — use --brand-lift for anything that
+     has to be legible on the dark ground, and keep --brand for the mark
+     itself and for light backgrounds. */
+  --brand:      #361674;
+  --brand-lift: #8B6BFF;
+
+  --ok:      #4FD1A5;
+  --ok-dim:  rgba(79,209,165,.13);
+  --warn:    #E8B84B;
+  --warn-dim:rgba(232,184,75,.13);
+
+  /* ---- type ---- */
+  --font-display: "Segoe UI Variable Display", "Segoe UI", Inter, -apple-system,
+                  "Helvetica Neue", Arial, sans-serif;
+  --font-text:    "Segoe UI Variable Text", "Segoe UI", Inter, -apple-system,
+                  "Helvetica Neue", Arial, sans-serif;
+  --font-mono:    "Cascadia Code", Consolas, "SF Mono", ui-monospace, monospace;
+
+  /* Viewport-relative so nothing ever needs to scroll. */
+  --t-display: clamp(34px, 4.9vw, 78px);
+  --t-h1:      clamp(27px, 3.5vw, 54px);
+  --t-h2:      clamp(20px, 2.05vw, 32px);
+  --t-h3:      clamp(17px, 1.5vw, 23px);
+  --t-lede:    clamp(15px, 1.32vw, 21px);
+  --t-body:    clamp(13px, 1.02vw, 16.5px);
+  --t-small:   clamp(11.5px, .86vw, 14px);
+  --t-label:   clamp(9.5px, .70vw, 12px);
+  --t-stat:    clamp(44px, 6.6vw, 104px);
+  --t-stat-sm: clamp(30px, 3.6vw, 54px);
+
+  /* ---- space ---- */
+  --sp-1: .35rem; --sp-2: .6rem;  --sp-3: .9rem;  --sp-4: 1.3rem;
+  --sp-5: 1.9rem; --sp-6: 2.6rem; --sp-7: 3.6rem; --sp-8: 5rem;
+
+  --ease:      cubic-bezier(.22,.68,.24,1);
+  --ease-out:  cubic-bezier(.16,1,.3,1);
+  --dur:       .62s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  /* dvh tracks mobile browser chrome (Safari's collapsing URL bar), which
+     100%/100vh does not — without this the deck is cropped on iOS. */
+  height: 100dvh;
+  /* HARD RULE on desktop: this deck never scrolls. Navigation is clicks only.
+     Compact mode relaxes this per-slide — see the compact block at the end. */
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+  cursor: default;
+  user-select: none;
+}
+
+/* Ambient field — a faint vignette + grain so flat black doesn't
+   read as "unfinished". Sits behind everything, never animates. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 85% at 50% -10%, rgba(107,155,255,.075), transparent 62%),
+    radial-gradient(90% 70% at 100% 108%, rgba(228,99,60,.05), transparent 60%);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 999; pointer-events: none;
+  opacity: .022;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+}
+
+/* ============================================================
+   DECK / SLIDE FRAME
+   ============================================================ */
+
+#deck { position: fixed; inset: 0; z-index: 1; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  padding: clamp(58px, 6vh, 96px) clamp(28px, 5vw, 96px);
+  opacity: 0; visibility: hidden;
+  transition: opacity .5s var(--ease);
+}
+.slide.is-active { opacity: 1; visibility: visible; }
+/* Slides leaving to the left vs right get no transform — a hard
+   cut with a short cross-fade reads as "deck", not "webpage". */
+
+.slide-inner {
+  width: 100%;
+  max-width: min(1400px, 90vw);
+  max-height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-5);
+}
+.slide-inner.is-wide { max-width: min(1620px, 95vw); }
+
+/* ============================================================
+   BEATS — progressive reveal, advanced by click
+   Elements with [data-beat="n"] appear when the slide reaches
+   beat n. Elements with no data-beat are always visible.
+   ============================================================ */
+
+[data-beat] {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(3px);
+  transition: opacity .55s var(--ease-out),
+              transform .65s var(--ease-out),
+              filter .55s var(--ease-out);
+  will-change: opacity, transform;
+}
+[data-beat].is-on { opacity: 1; transform: none; filter: none; }
+/* Stagger children of a revealed group by setting --i on them. */
+[data-beat] > [style*="--i"] { transition-delay: calc(var(--i) * 70ms); }
+.stagger > * {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s var(--ease-out) calc(var(--i, 0) * 80ms),
+              transform .55s var(--ease-out) calc(var(--i, 0) * 80ms);
+}
+[data-beat].is-on .stagger > *, .stagger.is-on > * { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-beat], .stagger > * { transition-duration: .01ms !important; filter: none !important; }
+  .slide { transition-duration: .01ms !important; }
+}
+
+/* ============================================================
+   TYPE COMPONENTS
+   ============================================================ */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex; align-items: center; gap: var(--sp-3);
+}
+.eyebrow--loss   { color: var(--loss); }
+.eyebrow--neu { color: var(--neu); }
+.eyebrow::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule);
+  max-width: 190px;
+}
+
+.h-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  line-height: 1.02;
+  letter-spacing: -.028em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+  line-height: 1.06;
+  letter-spacing: -.024em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  line-height: 1.18;
+  letter-spacing: -.016em;
+  font-weight: 600;
+}
+.h3 {
+  font-family: var(--font-display);
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  font-weight: 600;
+}
+.lede {
+  font-size: var(--t-lede);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+.body   { font-size: var(--t-body);  color: var(--ink-2); max-width: 68ch; }
+.small  { font-size: var(--t-small); color: var(--ink-3); }
+.hi        { color: var(--ink); }
+.hi-loss   { color: var(--loss-bright); }
+.hi-neu { color: var(--neu-bright); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.footnote {
+  font-family: var(--font-mono);
+  font-size: clamp(9px, .66vw, 11px);
+  letter-spacing: .04em;
+  color: var(--ink-4);
+  line-height: 1.5;
+  max-width: 92ch;
+  text-transform: none;
+}
+
+.rule-h { height: 1px; background: var(--rule); border: 0; width: 100%; }
+
+/* ============================================================
+   STATUS TAGS — honesty device. Every capability carries one.
+   ============================================================ */
+
+.tag {
+  display: inline-flex; align-items: center; gap: .45em;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: .34em .7em .3em;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.tag::before {
+  content: ""; width: .42em; height: .42em; border-radius: 50%;
+  background: currentColor;
+}
+.tag--live     { color: var(--ok);     background: var(--ok-dim); }
+.tag--building { color: var(--warn);   background: var(--warn-dim); }
+.tag--planned  { color: var(--ink-3);  background: rgba(255,255,255,.03); }
+.tag--planned::before { background: none; border: 1px solid currentColor; }
+
+/* ============================================================
+   LAYOUT HELPERS
+   ============================================================ */
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--sp-5); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--sp-5); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--sp-4); }
+.grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--sp-3); }
+.split  { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: clamp(28px,4vw,72px); align-items: center; }
+.stack  { display: flex; flex-direction: column; gap: var(--sp-3); }
+.stack-lg { display: flex; flex-direction: column; gap: var(--sp-5); }
+.row    { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.spread { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-4); }
+
+/* ============================================================
+   CARD / PANEL
+   ============================================================ */
+
+.panel {
+  background: linear-gradient(180deg, var(--bg-lift), rgba(16,18,26,.35));
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: var(--sp-4) var(--sp-4) var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  min-width: 0;
+}
+.panel--loss   { border-color: var(--loss-line);   background: linear-gradient(180deg, var(--loss-dim), rgba(16,18,26,.2)); }
+.panel--neu { border-color: var(--neu-line); background: linear-gradient(180deg, var(--neu-dim), rgba(16,18,26,.2)); }
+.panel-label {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3);
+}
+
+/* Numbered consequence / barrier list */
+.tick-list { display: flex; flex-direction: column; gap: var(--sp-2); list-style: none; }
+.tick-list li {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3);
+  align-items: baseline;
+  font-size: var(--t-lede); color: var(--ink);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--rule);
+}
+.tick-list li::before {
+  content: attr(data-n);
+  font-family: var(--font-mono); font-size: var(--t-label);
+  color: var(--ink-4); letter-spacing: .1em;
+}
+.tick-list--loss li::before   { color: var(--loss); }
+.tick-list--neu li::before { color: var(--neu); }
+
+/* ============================================================
+   STAT
+   ============================================================ */
+
+.stat { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: var(--t-stat);
+  line-height: .88; letter-spacing: -.045em; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--neu-bright);
+}
+.stat-num--sm   { font-size: var(--t-stat-sm); }
+.stat-num--loss { color: var(--loss-bright); }
+.stat-cap { font-size: var(--t-small); color: var(--ink-2); line-height: 1.45; max-width: 30ch; }
+.stat-key {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
+}
+
+/* ============================================================
+   VIDEO FRAME (Acts IV) — placeholder until assets land
+   ============================================================ */
+
+.video-frame {
+  position: relative; width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-lift);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  display: grid; place-items: center;
+}
+.video-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-placeholder {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-3);
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-4);
+  text-align: center;
+}
+.video-placeholder::before {
+  content: ""; width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid var(--ink-4);
+  background:
+    linear-gradient(90deg, transparent 46%, var(--ink-4) 46%, var(--ink-4) 54%, transparent 54%) no-repeat center/0,
+    conic-gradient(from 0deg, transparent, transparent);
+  position: relative;
+}
+.video-placeholder-mark {
+  position: absolute; width: 0; height: 0;
+  border-left: 11px solid var(--ink-4);
+  border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+}
+
+/* ============================================================
+   INTERACTIVE CONTROLS
+   Any control the user should be able to touch WITHOUT advancing
+   the deck must carry data-no-advance.
+   ============================================================ */
+
+.ctl {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-2);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: .55em 1em;
+  cursor: pointer;
+  transition: color .2s, background .2s, border-color .2s;
+}
+.ctl:hover { color: var(--ink); background: rgba(255,255,255,.08); border-color: var(--ink-3); }
+.ctl.is-on { color: var(--bg); background: var(--neu-bright); border-color: var(--neu-bright); }
+
+.hint {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-4);
+  display: flex; align-items: center; gap: .6em;
+}
+.hint::before { content: "↳"; color: var(--neu); }
+
+/* ============================================================
+   CHROME — wordmark, act rail, footer, progress
+   ============================================================ */
+
+#chrome { position: fixed; inset: 0; z-index: 500; pointer-events: none; }
+#chrome > * { pointer-events: auto; }
+
+/* The logo IS the mark, so no dot — and the three E bars run at --brand-lift
+   because the true brand violet is unreadable at this size on black. */
+.wordmark {
+  position: fixed; top: clamp(20px,2.6vh,34px); left: clamp(24px,3vw,48px);
+  color: var(--ink);
+  --brand: var(--brand-lift);
+  height: clamp(15px, 1.5vh, 20px);
+  display: flex; align-items: center;
+}
+.wordmark svg { height: 100%; width: auto; display: block; }
+
+#act-rail {
+  position: fixed; top: clamp(20px,2.6vh,34px); right: clamp(24px,3vw,48px);
+  display: flex; gap: clamp(10px,1.4vw,22px); align-items: center;
+}
+.act-item {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-4); cursor: pointer;
+  display: flex; align-items: center; gap: .5em;
+  transition: color .3s var(--ease);
+  background: none; border: 0; padding: 0;
+}
+.act-item .act-num { color: inherit; opacity: .7; }
+.act-item .act-name { display: none; }
+.act-item:hover { color: var(--ink-2); }
+.act-item.is-current { color: var(--ink); }
+.act-item.is-current .act-name { display: inline; }
+.act-item.is-done { color: var(--ink-3); }
+@media (max-width: 860px) { .act-item.is-current .act-name { display: none; } }
+
+#footer-bar {
+  position: fixed; bottom: clamp(18px,2.4vh,30px);
+  left: clamp(24px,3vw,48px); right: clamp(24px,3vw,48px);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-4);
+}
+#slide-title {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-4);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 46vw;
+}
+#nav-right { display: flex; align-items: center; gap: var(--sp-4); }
+#beat-dots { display: flex; gap: 5px; align-items: center; }
+.beat-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ink-4); transition: background .3s, transform .3s;
+}
+.beat-dot.is-on { background: var(--neu); transform: scale(1.35); }
+#counter {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .14em; color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+#counter b { color: var(--ink); font-weight: 600; }
+
+#progress {
+  position: fixed; bottom: 0; left: 0; height: 2px; z-index: 600;
+  background: linear-gradient(90deg, var(--neu), var(--neu-bright));
+  transition: width .45s var(--ease); pointer-events: none;
+}
+
+#click-hint {
+  position: fixed; bottom: clamp(18px,2.4vh,30px); left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-4);
+  transition: opacity .6s var(--ease); opacity: 1;
+  display: flex; align-items: center; gap: .8em;
+}
+#click-hint.is-hidden { opacity: 0; }
+#click-hint kbd {
+  font-family: var(--font-mono); font-size: inherit;
+  border: 1px solid var(--rule-strong); border-radius: 2px;
+  padding: .2em .45em; color: var(--ink-3);
+}
+
+/* ============================================================
+   OVERVIEW (Esc)
+   ============================================================ */
+
+#overview {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(5,6,9,.93);
+  backdrop-filter: blur(14px);
+  padding: clamp(48px,7vh,90px) clamp(28px,5vw,80px);
+  display: none; flex-direction: column; gap: var(--sp-5);
+  overflow: hidden;
+}
+#overview.is-open { display: flex; }
+#ov-grid {
+  display: grid; gap: var(--sp-4);
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  align-content: start;
+}
+.ov-act { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.ov-act-head {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--neu);
+  padding-bottom: var(--sp-2); border-bottom: 1px solid var(--neu-line);
+}
+.ov-slide {
+  text-align: left; background: none; border: 0; cursor: pointer;
+  padding: .55em .6em; border-radius: 3px;
+  font-size: var(--t-small); color: var(--ink-2); line-height: 1.35;
+  display: grid; grid-template-columns: 2.2em 1fr; gap: .4em;
+  transition: background .2s, color .2s;
+  font-family: var(--font-text);
+}
+.ov-slide span { font-family: var(--font-mono); font-size: var(--t-label); color: var(--ink-4); }
+.ov-slide:hover { background: rgba(255,255,255,.06); color: var(--ink); }
+.ov-slide.is-current { background: var(--neu-dim); color: var(--neu-bright); }
+.ov-slide.is-current span { color: var(--neu); }
+
+/* ============================================================
+   PLAY MODE indicator
+   ============================================================ */
+
+#play-flag {
+  position: fixed; top: 50%; left: clamp(24px,3vw,48px);
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .28em; text-transform: uppercase; color: var(--neu);
+  opacity: 0; transition: opacity .4s; z-index: 550; pointer-events: none;
+}
+#play-flag.is-on { opacity: 1; }
+
+/* ============================================================
+   Guard: if a slide overflows, make it obvious — but ONLY with
+   ?dev=1, so the delivered deck can never show a dev artefact.
+   ============================================================ */
+html[data-dev] .slide[data-overflow="1"] {
+  outline: 1px dashed var(--loss); outline-offset: -6px;
+}
+#dev-hud {
+  position: fixed; z-index: 1000; top: 0; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em;
+  color: #000; background: var(--warn);
+  padding: 2px 8px; pointer-events: none; white-space: nowrap;
+}
+
+/* Bottom nav is compact-only; hidden by default so desktop is untouched. */
+#m-nav { display: none; }
+
+/* ============================================================
+   COMPACT — phones and narrow portrait tablets.
+
+   The deck stops being a fixed 16:9 frame and becomes a swipeable card
+   stack. Cards may scroll vertically; the deck still never scrolls as a
+   whole. Nothing here touches desktop.
+
+   The old narrow-screen rules survived by display:none-ing the plan, the
+   videos and the diagrams. That is exactly backwards — on a phone those
+   visuals are the most persuasive thing on the screen, so they stay and
+   the layout gives them room instead.
+   ============================================================ */
+@media (max-width: 820px) {
+
+  :root {
+    /* Re-tuned for a hand-held screen: headlines smaller so they don't eat
+       the viewport, body copy LARGER because 13px is unreadable at arm's
+       length. Height is cheap now that cards scroll. */
+    --t-display: 30px;
+    --t-h1:      25px;
+    --t-h2:      20px;
+    --t-h3:      17px;
+    --t-lede:    16px;
+    --t-body:    14.5px;
+    --t-small:   12.5px;
+    --t-label:   10px;
+    --t-stat:    40px;
+    --t-stat-sm: 28px;
+  }
+
+  /* ---- the card becomes the scroll container ---- */
+  .slide {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Bottom clearance = nav (64) + docked progress strip (28) + breathing. */
+    padding: 60px 20px calc(104px + env(safe-area-inset-bottom, 0px));
+  }
+  .slide-inner,
+  .slide-inner.is-wide {
+    max-width: 100%;
+    max-height: none;
+    justify-content: flex-start;
+    gap: var(--sp-4);
+  }
+
+  /* Long unbroken strings (file paths, STEP/IGES, tag lists) must never
+     push the card wider than the screen. */
+  .slide-inner, .slide-inner * { min-width: 0; }
+  .lede, .body, .small, .footnote, .stat-cap, .h1, .h2, .h3, .h-display {
+    overflow-wrap: break-word;
+  }
+
+  /* ---- every multi-column layout collapses ---- */
+  .split,
+  .grid-2,
+  .grid-3            { grid-template-columns: minmax(0, 1fr); }
+  .grid-4,
+  .grid-5            { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spread            { flex-wrap: wrap; }
+  .eyebrow::after    { max-width: 60px; }
+
+  /* ---- touch targets: 44px minimum ---- */
+  .ctl {
+    min-height: 44px;
+    padding: .7em 1em;
+    display: inline-flex; align-items: center;
+  }
+  .tag { padding: .45em .7em .4em; }
+
+  /* ---- chrome ---- */
+  .wordmark { top: 18px; left: 20px; height: 15px; }
+
+  /* The act rail loses its labels and becomes a position readout. */
+  #act-rail { top: 18px; right: 20px; gap: 8px; }
+  .act-item .act-name { display: none !important; }
+
+  /* No keyboard on a phone — the hint is replaced by the nav bar. */
+  #click-hint { display: none; }
+
+  /* The slide title is the least useful thing on a small screen. The counter
+     and beat dots stay — they show progress — but they must DOCK above the nav
+     on an opaque strip, not float over scrolling content. */
+  #footer-bar {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    left: 0; right: 0;
+    padding: 7px 20px;
+    background: var(--bg);
+    justify-content: flex-end;
+  }
+  #slide-title { display: none; }
+
+  #m-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 560;
+    display: flex; align-items: stretch;
+    background: linear-gradient(180deg, transparent, var(--bg) 45%);
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+  }
+  #m-nav button {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-2);
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+    min-height: 44px;
+    cursor: pointer;
+  }
+  #m-nav #m-prev, #m-nav #m-index { flex: 0 0 auto; padding: 0 1.1em; }
+  #m-nav #m-next { flex: 1 1 auto; color: var(--ink); }
+  #m-nav button:active { background: rgba(255,255,255,.12); }
+
+  #overview { padding: 66px 20px 84px; overflow-y: auto; }
+  #ov-grid { grid-template-columns: minmax(0, 1fr); }
+
+  #play-flag { display: none; }
+}
+
+/* Landscape phone: too short for a scrolling card to feel right, but the
+   two-column desktop layouts are also too cramped. Keep it single-column
+   and let it scroll. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .slide { padding-top: 46px; padding-bottom: 46px; }
+}

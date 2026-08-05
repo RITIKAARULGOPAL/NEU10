@@ -1,0 +1,178 @@
+<section class="slide" id="s05" data-act="III"
+         data-title="One change. Every output updates." data-dwell="4400">
+  <div class="slide-inner">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--neu">Act III &middot; The shift</p>
+      <h1 class="h-display">One change.<br>Every output updates.</h1>
+    </div>
+
+    <!-- Beat 2 — the old world stated once, in loss, then answered by the
+         cascade. The spine draws down as the five lines accumulate. -->
+    <div class="src" data-beat="2">
+      <p class="instead">Instead of recreating drawings across multiple software,</p>
+
+      <div class="cascade stagger">
+        <p class="ev" style="--i:0"><b>every</b> plan,</p>
+        <p class="ev" style="--i:1"><b>every</b> elevation,</p>
+        <p class="ev" style="--i:2"><b>every</b> section,</p>
+        <p class="ev" style="--i:3"><b>every</b> quantity,</p>
+        <p class="ev" style="--i:4"><b>every</b> schedule</p>
+        <p class="resolve" style="--i:5"><i class="tie" aria-hidden="true"></i>comes
+          from the same model.</p>
+      </div>
+    </div>
+
+    <div class="tail">
+      <p class="evolve" data-beat="3">Design intent never gets recreated.<br>
+        <span class="hi-neu">It simply evolves.</span></p>
+
+      <p class="aside" data-beat="4">The handoffs disappear &mdash; there is no
+        &lsquo;export and redraw&rsquo; step, because there is no second tool
+        holding a second version of the truth.</p>
+
+      <p class="footnote" data-beat="4">This is the principle the single model is
+        built on. Which of these outputs generate automatically today, and which
+        are still being built, is set out on screens 10 and 14.</p>
+    </div>
+
+    <!-- Beat 5 — the dimensions. The cascade above is about OUTPUTS; this is
+         about how far the same model reaches. Labelled "3D to 10D" rather than
+         "ten dimensions", because the ladder has eight rungs and someone will
+         count them. -->
+    <div class="dims" data-beat="5">
+      <p class="mono dims-head">And the same model reaches
+        <span class="hi-neu">from 3D to 10D</span></p>
+      <div class="dim-row stagger">
+        <div class="dim" style="--i:0"><b>3D</b><span>Geometry &amp; Space</span></div>
+        <div class="dim" style="--i:1"><b>4D</b><span>Time &amp; Phasing</span></div>
+        <div class="dim" style="--i:2"><b>5D</b><span>Cost &amp; Quantities</span></div>
+        <div class="dim" style="--i:3"><b>6D</b><span>Sustainability</span></div>
+        <div class="dim" style="--i:4"><b>7D</b><span>Facility Management</span></div>
+        <div class="dim" style="--i:5"><b>8D</b><span>Safety &amp; OHS</span></div>
+        <div class="dim" style="--i:6"><b>9D</b><span>Lean Construction</span></div>
+        <div class="dim" style="--i:7"><b>10D</b><span>Productivity &amp; Integration</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+#s05 .h-display { max-width: 24ch; }
+
+/* the old world — stated once, recessive, in loss */
+#s05 .instead {
+  font-size: var(--t-lede);
+  line-height: 1.45;
+  color: var(--loss);
+  margin-bottom: var(--sp-3);
+}
+
+/* ---- the cascade: one accumulating idea on a single spine ---- */
+#s05 .cascade {
+  position: relative;
+  display: flex; flex-direction: column; gap: 2px;
+  padding-left: clamp(16px, 1.8vw, 28px);
+}
+#s05 .cascade::before {
+  content: ""; position: absolute; left: 0; top: .2em; bottom: .3em;
+  width: 1px; background: var(--neu-line);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .95s var(--ease-out) .12s;
+}
+#s05 .src.is-on .cascade::before { transform: none; }
+
+#s05 .cascade > * {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.016em;
+  color: var(--ink);
+  /* small progressive indent — the same --i that drives the stagger */
+  padding-left: calc(var(--i, 0) * .85em);
+}
+#s05 .cascade b { font-weight: inherit; color: var(--neu-bright); }
+
+#s05 .resolve { line-height: 1.14; margin-top: .16em; }
+#s05 .tie {
+  display: inline-block; position: relative;
+  width: clamp(22px, 2.6vw, 44px); height: 1px;
+  background: var(--neu);
+  vertical-align: .3em; margin-right: .4em;
+}
+#s05 .tie::after {
+  content: ""; position: absolute; right: -1px; top: -3px;
+  border-left: 5px solid var(--neu);
+  border-top: 3px solid transparent; border-bottom: 3px solid transparent;
+}
+#s05 .resolve .tag { vertical-align: middle; margin-left: clamp(8px, .9vw, 16px); }
+
+/* ---- closing beats ---- */
+#s05 .tail { display: flex; flex-direction: column; gap: var(--sp-3); }
+#s05 .evolve {
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.016em;
+  color: var(--ink-2);
+}
+#s05 .aside {
+  font-size: var(--t-small);
+  line-height: 1.55;
+  color: var(--ink-3);
+  max-width: 74ch;
+}
+
+/* ---- the dimension ladder ---- */
+#s05 .dims { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s05 .dims-head { color: var(--ink-3); }
+#s05 .dim-row {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: clamp(6px, .9vw, 16px);
+}
+#s05 .dim {
+  display: flex; flex-direction: column; gap: .3em;
+  min-width: 0;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--neu-line);
+}
+#s05 .dim b {
+  font-family: var(--font-mono); font-weight: 400;
+  font-size: var(--t-label); letter-spacing: .16em;
+  color: var(--neu-bright);
+}
+#s05 .dim span {
+  font-size: var(--t-small); line-height: 1.28; color: var(--ink-2);
+}
+
+@media (max-width: 900px) {
+  #s05 .cascade > * { padding-left: calc(var(--i, 0) * .5em); }
+  #s05 .dim-row { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: var(--sp-3); }
+}
+/* The ladder pushed this slide 17px over at 720p. Tighten the block rhythm and
+   the "instead" spacer rather than dropping copy — at 720p everything still
+   fits, footnote included. Only below that does content start shedding, and the
+   footnote (a pointer, not a claim) goes before the aside. */
+@media (max-height: 800px) {
+  #s05 .slide-inner { gap: var(--sp-3); }
+  #s05 .instead { margin-bottom: var(--sp-2); }
+  #s05 .tail { gap: var(--sp-2); }
+}
+/* 780px, not 700: at 720p the ladder puts this slide 25px over and the
+   footnote is 27px. It is a pointer to other screens rather than a claim, so
+   dropping it costs nothing in honesty — and it returns at 1080p. */
+@media (max-height: 780px) {
+  #s05 .footnote { display: none; }
+}
+@media (max-height: 660px) {
+  #s05 .aside { display: none; }
+  #s05 .dim span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #s05 .cascade::before { transition-duration: .01ms; }
+}
+</style>

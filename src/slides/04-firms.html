@@ -1,0 +1,146 @@
+<section class="slide" id="s04" data-act="II"
+         data-title="Two kinds of firms, same dead end">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--loss">Act II &middot; Why it hasn&rsquo;t stuck</p>
+      <h1 class="h1" style="max-width:40ch">Two kinds of firms, same dead end</h1>
+    </div>
+
+    <div class="grid-2 firms" data-beat="2">
+      <div class="panel panel--loss">
+        <h2 class="h3">Firms wanting BIM</h2>
+        <p class="fp-line">They know CAD isn&rsquo;t sustainable.</p>
+        <p class="fp-line">But existing BIM feels
+          <span class="hi-loss">too complicated.</span></p>
+      </div>
+      <div class="panel panel--loss">
+        <h2 class="h3">Firms already using BIM</h2>
+        <p class="fp-line">They&rsquo;ve adopted BIM.</p>
+        <p class="fp-line">Now they&rsquo;re struggling with</p>
+        <div class="row chips">
+          <span class="chip">rigidity</span>
+          <span class="chip">maintenance</span>
+          <span class="chip">specialist dependency</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack tools" data-beat="3">
+      <p class="mono tools-head">What they&rsquo;re using now</p>
+      <div class="grid-3 stagger tools-grid">
+        <div class="tool" style="--i:0">
+          <p class="tool-name">Revit</p>
+          <p class="tool-why">Steep learning curve and a rigid, heavy workflow</p>
+        </div>
+        <div class="tool" style="--i:1">
+          <p class="tool-name">Rhino + plugins</p>
+          <p class="tool-why">Powerful but fragile &mdash; stitched together from
+            multiple plugins, no native BOQ or CD output</p>
+        </div>
+        <div class="tool" style="--i:2">
+          <p class="tool-name">Manual AutoCAD / SketchUp</p>
+          <p class="tool-why">The disconnected loop itself</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="h1 hi-neu turn-line" data-beat="4">Neu10 bridges both worlds.</p>
+
+  </div>
+</section>
+
+<style>
+/* This slide carries four blocks, so it runs on a tighter rhythm
+   than the default slide gap. */
+#s04 .slide-inner { gap: var(--sp-4); }
+
+/* ---- the two segments ---- */
+#s04 .firms { position: relative; }
+#s04 .fp-line {
+  font-size: var(--t-lede);
+  line-height: 1.45;
+  color: var(--ink);
+}
+#s04 .chips { gap: var(--sp-2); }
+#s04 .chip {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--loss-bright);
+  border: 1px solid var(--loss-line);
+  background: var(--loss-dim);
+  border-radius: 2px;
+  padding: .5em .75em .45em;
+  white-space: nowrap;
+}
+
+/* Beat 4 draws a hairline across the gap between the two panels, arriving with
+   the "Neu10 bridges both worlds" line. Both are blue, and deliberately so on
+   an otherwise loss-coloured Act II slide: they are the turn into Act III.
+   Width is exactly .grid-2's gap (--sp-5), so the bridge meets both panel
+   edges instead of overhanging and painting across their borders. */
+#s04 .firms::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: var(--sp-5); height: 1px;
+  background: var(--neu-bright);
+  box-shadow: 0 0 12px var(--neu);
+  transform: translate(-50%, -50%) scaleX(.15);
+  opacity: 0; pointer-events: none;
+  transition: opacity .45s var(--ease), transform .65s var(--ease-out);
+}
+#s04 .firms.is-bridged::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scaleX(1);
+}
+
+/* ---- what they're using now ---- */
+#s04 .tools-head { color: var(--loss); }
+#s04 .tools-grid { gap: clamp(14px, 1.9vw, 34px); }
+#s04 .tool {
+  display: flex; flex-direction: column; gap: .45em;
+  border-top: 1px solid var(--loss-line);
+  padding-top: var(--sp-2);
+  min-width: 0;
+}
+#s04 .tool-name {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+#s04 .tool-why {
+  font-size: var(--t-small);
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+/* The turn into Act III. Its own hairline instead of a full-width rule,
+   so the line owns the bottom of the frame without a fourth block. */
+#s04 .turn-line {
+  width: fit-content;
+  max-width: 100%;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--sp-3);
+}
+
+@media (max-width: 900px) {
+  #s04 .slide-inner { gap: var(--sp-3); }
+  #s04 .tools-grid { grid-template-columns: 1fr; }
+  #s04 .firms::after { display: none; }
+}
+</style>
+
+<script>
+Neu10.register('s04', {
+  beat: function (el, n) {
+    el.querySelector('.firms').classList.toggle('is-bridged', n >= 4);
+  },
+  leave: function (el) {
+    el.querySelector('.firms').classList.remove('is-bridged');
+  }
+});
+</script>

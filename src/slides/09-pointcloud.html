@@ -1,0 +1,186 @@
+<section class="slide" id="s09" data-act="IV"
+         data-title="Start from the real site — not assumptions" data-dwell="4600">
+  <div class="slide-inner is-wide">
+    <div class="split">
+
+      <!-- ---------- left: the argument ---------- -->
+      <div class="colL">
+        <div class="stack">
+          <p class="eyebrow eyebrow--neu">Act IV &middot; Built for interiors</p>
+          <h1 class="h1">Start from the real site<br>&mdash; not assumptions</h1>
+        </div>
+
+        <div class="cap" data-beat="2">
+          <div class="cap-head">
+            <span class="mono">In the product today</span>
+            <span class="tag tag--live">Live</span>
+          </div>
+          <ol class="tick-list tick-list--neu stagger">
+            <li data-n="01" style="--i:0"><span>Scan the existing office.</span></li>
+            <li data-n="02" style="--i:1"><span>Bring it
+              <span class="hi-neu">directly into Neu10.</span></span></li>
+            <li data-n="03" style="--i:2"><span>Design over actual site conditions
+              instead of manually recreating them.</span></li>
+          </ol>
+        </div>
+
+        <div class="cap cap--road" data-beat="3">
+          <div class="cap-head">
+            <span class="mono">On the roadmap</span>
+            <span class="tag tag--planned">Planned</span>
+          </div>
+          <p class="small">
+            Automatically convert scanned data into intelligent BIM objects,
+            eliminating hours of manual modelling.
+          </p>
+        </div>
+      </div>
+
+      <!-- ---------- right: the evidence ---------- -->
+      <div class="colR">
+        <div class="video-frame">
+          <video class="vid" muted playsinline preload="auto"
+                 src="assets/point-cloud.mp4"></video>
+          <div class="video-placeholder">
+            <span class="video-placeholder-mark"></span>
+            Video &mdash; assets/point-cloud.mp4
+          </div>
+        </div>
+
+        <div class="vstrip" data-beat="4">
+          <p class="small">
+            Revit (RCP / RCS / E57), ArchiCAD (LAS / E57) and Rhino all import
+            point clouds natively.
+          </p>
+          <p class="body">
+            <span class="hi">But all three treat it as a reference layer to
+            model over</span> &mdash; which is precisely why
+            <span class="hi-loss">paid scan-to-BIM services exist as a separate
+            step in the chain.</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---- Act IV video template (shared idiom with #s08 / #s10) ---- */
+#s09 .split { grid-template-columns: minmax(0,1.04fr) minmax(0,1fr); }
+#s09 .colL { display: flex; flex-direction: column; gap: var(--sp-5); min-width: 0; }
+#s09 .colR { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+
+/* status block — a labelled capability that always carries its tag */
+#s09 .cap { display: flex; flex-direction: column; gap: var(--sp-3); }
+#s09 .cap p { text-wrap: pretty; }
+#s09 .cap-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--neu-line);
+}
+#s09 .cap-head .mono { color: var(--neu); }
+#s09 .cap--road { gap: var(--sp-2); }
+#s09 .cap--road .cap-head { border-bottom-color: var(--rule); }
+#s09 .cap--road .cap-head .mono { color: var(--ink-3); }
+#s09 .cap--road .small { color: var(--ink-2); }
+
+/* the three live lines. Each li is a grid (marker + one cell), so the
+   whole line must sit inside a single child element. */
+#s09 .tick-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+
+/* video: stack the placeholder over the video in a single grid cell */
+#s09 .video-frame > * { grid-area: 1 / 1; }
+#s09 .vid {
+  place-self: stretch;
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+#s09 .video-frame.is-ready .vid { opacity: 1; }
+#s09 .video-frame.is-ready .video-placeholder { opacity: 0; }
+#s09 .video-placeholder { position: relative; transition: opacity .4s var(--ease); }
+#s09 .video-placeholder-mark { top: 16px; left: 50%; margin-left: -3px; }
+
+/* the strip under the video carries the closing competitive beat */
+#s09 .vstrip {
+  border-left: 1px solid var(--rule-strong);
+  padding-left: var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+
+@media (max-width: 1000px) {
+  #s09 .split { grid-template-columns: 1fr; gap: var(--sp-4); }
+  /* The video used to be display:none here. On a phone it is the most
+     persuasive thing on the slide, so it stays at full card width. */
+}
+</style>
+
+<script>
+Neu10.register('s09', (function () {
+  var PLAY_BEAT = 2;
+
+  /* holdPlay / releasePlay must stay balanced, or autoplay deadlocks. */
+  function hold(el)    { if (el.dataset.held === '1') return; el.dataset.held = '1'; Neu10.holdPlay(); }
+  function release(el) { if (el.dataset.held !== '1') return; el.dataset.held = '0'; Neu10.releasePlay(); }
+
+  /* The asset can finish loading before this slide is ever entered, in which
+     case the loadeddata event is long gone — readyState is the truth. */
+  function ready(el) {
+    var v = el.querySelector('.vid');
+    var ok = !v.error && v.readyState >= 2;
+    el.querySelector('.video-frame').classList.toggle('is-ready', ok);
+    return ok;
+  }
+
+  function maybePlay(el) {
+    var v = el.querySelector('.vid');
+    if (el.dataset.armed !== '1') return;
+    if (v.error) return;   /* genuinely no asset — placeholder stays */
+    if (el.dataset.started === '1') return;
+    el.dataset.started = '1';
+    hold(el);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      el.dataset.started = '0'; release(el);
+    });
+  }
+
+  function stopVideo(el) {
+    var v = el.querySelector('.vid');
+    el.dataset.armed = '0';
+    el.dataset.started = '0';
+    v.pause();
+    try { v.currentTime = 0; } catch (e) {}
+    release(el);
+  }
+
+  function wire(el) {
+    if (el.dataset.wired === '1') return;
+    el.dataset.wired = '1';
+    var v = el.querySelector('.vid');
+    v.addEventListener('loadeddata', function () { ready(el); maybePlay(el); });
+    /* 'playing' is the only honest moment to drop the placeholder: frames are
+       on screen. readyState alone was a guess, and a wrong one. */
+    v.addEventListener('playing', function () {
+      el.querySelector('.video-frame').classList.add('is-ready');
+    });
+    v.addEventListener('error',      function () { ready(el); release(el); });
+    v.addEventListener('ended',      function () { release(el); });
+  }
+
+  return {
+    enter: function (el) { wire(el); ready(el); },
+
+    beat: function (el, n) {
+      if (n < PLAY_BEAT) {
+        stopVideo(el);
+      } else {
+        el.dataset.armed = '1';
+        maybePlay(el);
+      }
+    },
+
+    leave: function (el) { stopVideo(el); }
+  };
+})());
+</script>

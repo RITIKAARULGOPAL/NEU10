@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEU10 — Product Pitch</title>
+<meta name="description" content="NEU10: BIM built for office interiors. One connected model from scan to documentation.">
+<style>
+/*<!--INJECT:TOKENS-->*/
+</style>
+</head>
+<body>
+
+<div id="deck">
+<!--INJECT:SLIDES-->
+</div>
+
+<div id="chrome">
+  <!-- The logo is injected from src/wordmark.svg, so swapping the brand mark
+       is a one-file change and never touches this shell. -->
+  <div class="wordmark" role="img" aria-label="NEU10">
+<!--INJECT:WORDMARK-->
+  </div>
+  <nav id="act-rail" aria-label="Sections"></nav>
+
+  <div id="footer-bar">
+    <div id="slide-title"></div>
+    <div id="nav-right">
+      <div id="beat-dots" aria-hidden="true"></div>
+      <div id="counter"></div>
+    </div>
+  </div>
+
+  <div id="click-hint">
+    Click to advance <kbd>&larr;</kbd><kbd>&rarr;</kbd> <kbd>Esc</kbd> index <kbd>P</kbd> autoplay
+  </div>
+
+  <!-- Compact-only. Phones advance by swipe or these, never by tapping the
+       card, because the card scrolls and its visuals are tappable. -->
+  <nav id="m-nav" data-no-advance aria-label="Slide navigation">
+    <button id="m-prev" aria-label="Previous">&larr;</button>
+    <button id="m-index" aria-label="Index">Index</button>
+    <button id="m-next" aria-label="Next">Next &rarr;</button>
+  </nav>
+  <div id="progress"></div>
+  <div id="play-flag">Autoplay</div>
+</div>
+
+<div id="overview">
+  <div class="eyebrow">Index &mdash; click any screen</div>
+  <div id="ov-grid"></div>
+</div>
+
+<script>
+/*<!--INJECT:ENGINE-->*/
+</script>
+<!--INJECT:SLIDE_SCRIPTS-->
+</body>
+</html>

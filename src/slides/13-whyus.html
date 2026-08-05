@@ -1,0 +1,110 @@
+<section class="slide" id="s13" data-act="V"
+         data-title="Why Officebanao">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--neu">Act V &middot; The case</p>
+      <h1 class="h-display">Why Officebanao</h1>
+    </div>
+
+    <div class="args">
+
+      <div class="arg" data-beat="2">
+        <p class="arg-n">01</p>
+        <h2 class="h2 arg-h">We are the user.</h2>
+        <div class="arg-ev">
+          <p>The cycle in Act I &mdash; Design, Model, Documentation, BOQ, MEP,
+             Site Execution &mdash; is <span class="hi">Officebanao&rsquo;s own
+             process.</span></p>
+        </div>
+        <p class="arg-punch">The pain is
+          <span class="hi-neu">first-hand, not researched.</span></p>
+      </div>
+
+      <div class="arg" data-beat="3">
+        <p class="arg-n">02</p>
+        <h2 class="h2 arg-h">The scope is the moat.</h2>
+        <div class="arg-ev">
+          <p>A dedicated tool, not a general-purpose BIM platform.
+             <span class="hi">Built only for office interiors.</span></p>
+          <p>Revit carries generalised complexity because it has to handle
+             anything from a bridge to a hospital.</p>
+        </div>
+        <p class="arg-punch">A tool
+          <span class="hi-neu">scoped that narrowly</span>
+          can only be built by someone whose work is scoped that narrowly.</p>
+      </div>
+
+      <div class="arg" data-beat="4">
+        <p class="arg-n">03</p>
+        <h2 class="h2 arg-h">The demand already exists.</h2>
+        <div class="arg-ev">
+          <p>Firms that want BIM but find it
+             <span class="hi">too complicated.</span></p>
+          <p>Firms on BIM who find it
+             <span class="hi">too rigid to sustain.</span></p>
+        </div>
+        <p class="arg-punch">The two firm types from Act II are
+          <span class="hi-neu">already looking for something else.</span></p>
+      </div>
+
+    </div>
+
+    <p class="footnote" data-beat="4">
+      This slide is the strategic argument only &mdash; it makes no market-size
+      or revenue claim.
+    </p>
+
+  </div>
+</section>
+
+<style>
+#s13 .args {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 3.2vw, 58px);
+  align-items: stretch;
+}
+/* Each argument is a column with a hairline head and a bottom-aligned
+   payoff line, so the three payoffs read as one row across the slide. */
+#s13 .arg {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  min-width: 0;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--neu-line);
+}
+#s13 .arg-n {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .2em; color: var(--neu);
+}
+#s13 .arg-h { max-width: 17ch; }
+#s13 .arg-ev {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+#s13 .arg-ev p {
+  font-size: var(--t-body); line-height: 1.5; color: var(--ink-2);
+}
+/* Bottom-aligned, and reserved at two lines so the three hairlines
+   land on one row across the slide. */
+#s13 .arg-punch {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-lede); line-height: 1.45; color: var(--ink);
+  min-height: calc(4.35em + var(--sp-3) + 1px);
+}
+@media (max-width: 940px) {
+  #s13 .args { grid-template-columns: 1fr; gap: var(--sp-4); }
+  #s13 .arg-punch {
+    margin-top: var(--sp-2);
+    /* The reserved two-line height exists only to land the three hairlines on
+       one row across the slide. Stacked, that alignment is meaningless and the
+       reservation costs ~150px of height the viewport does not have. */
+    min-height: 0;
+    padding-top: var(--sp-2);
+  }
+  #s13 .arg { gap: var(--sp-1); padding-top: var(--sp-2); }
+  #s13 .arg-h { max-width: none; }
+}
+</style>

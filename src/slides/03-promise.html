@@ -1,0 +1,74 @@
+<section class="slide" id="s03" data-act="II"
+         data-title="What the industry has been trying to solve">
+  <div class="slide-inner is-wide">
+
+    <div class="split">
+
+      <div class="stack-lg">
+        <div class="stack">
+          <p class="eyebrow eyebrow--loss">Act II &middot; Why it hasn&rsquo;t stuck</p>
+          <h1 class="h1" style="max-width:19ch">What the Industry Has Been Trying to Solve</h1>
+        </div>
+        <p class="lede">
+          For years, BIM promised
+          <span class="hi">a single intelligent model.</span>
+        </p>
+      </div>
+
+      <div class="stack-lg chal">
+        <p class="lede" data-beat="2">
+          But traditional BIM tools introduced
+          <span class="hi-loss">new challenges:</span>
+        </p>
+        <div data-beat="3">
+          <ul class="tick-list tick-list--loss stagger">
+            <li data-n="01" style="--i:0">High learning curve</li>
+            <li data-n="02" style="--i:1">Heavy workflows</li>
+            <li data-n="03" style="--i:2">Dedicated BIM specialists</li>
+            <li data-n="04" style="--i:3">Slow conceptual design</li>
+            <li data-n="05" style="--i:4">Difficult adoption</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="stack close" data-beat="4">
+      <hr class="rule-h">
+      <p class="h2 close-line">
+        So many firms continue working in
+        <span class="hi-loss">AutoCAD&nbsp;+&nbsp;SketchUp</span>
+        <span class="close-quiet">despite knowing its limitations.</span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* Two columns: the promise on the left, what it cost on the right.
+   On beat 4 the list of challenges recedes — the headline and the
+   closing line are the only things left fully lit. */
+#s03 .split { align-items: start; }
+#s03 .chal { transition: opacity .6s var(--ease); }
+#s03 .chal.is-quiet { opacity: .5; }
+
+#s03 .close-line { max-width: 46ch; }
+#s03 .close-quiet { color: var(--ink-2); }
+
+@media (max-width: 1000px) {
+  #s03 .split { grid-template-columns: 1fr; gap: var(--sp-4); }
+  #s03 .slide-inner { gap: var(--sp-4); }
+}
+</style>
+
+<script>
+Neu10.register('s03', {
+  beat: function (el, n) {
+    el.querySelector('.chal').classList.toggle('is-quiet', n >= 4);
+  },
+  leave: function (el) {
+    el.querySelector('.chal').classList.remove('is-quiet');
+  }
+});
+</script>

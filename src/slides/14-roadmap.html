@@ -1,0 +1,226 @@
+<section class="slide" id="s14" data-act="V"
+         data-title="What's live, what's coming" data-dwell="4200">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--neu">Act V &middot; The case</p>
+      <h1 class="h1">What&rsquo;s live, what&rsquo;s coming</h1>
+    </div>
+
+    <!-- The title promises "what's live", so what ships today is stated first,
+         otherwise the slide reads as though nothing exists yet. -->
+    <div class="livenow">
+      <span class="tag tag--live">Live today</span>
+      <p class="live-list">Point cloud import &middot; Parametric modelling +
+        natural-language query &middot; Windows</p>
+    </div>
+
+    <!-- DATED WORK — one continuous spine, four months, every item BUILDING -->
+    <div class="dated">
+      <p class="mono band-label">Short term, August to November</p>
+
+      <div class="track">
+
+        <div class="mo" data-mo="aug">
+          <p class="mono mo-name">August</p>
+          <div class="its" data-beat="2">
+            <div class="it" style="--i:0">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Full space planning support</span>
+            </div>
+            <div class="it" style="--i:1">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Import / export interoperability</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mo" data-mo="sep">
+          <p class="mono mo-name">September</p>
+          <div class="its" data-beat="2">
+            <div class="it" style="--i:2">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Space planning + interoperability complete</span>
+            </div>
+            <div class="it" style="--i:3">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Detailed cost module begins</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mo" data-mo="oct">
+          <p class="mono mo-name">October</p>
+          <div class="its" data-beat="2">
+            <div class="it" style="--i:4">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Detailed cost module complete</span>
+            </div>
+            <div class="it" style="--i:5">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">MEP integration</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mo" data-mo="nov">
+          <p class="mono mo-name">November</p>
+          <div class="its" data-beat="2">
+            <div class="it" style="--i:6">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Mac and Linux support</span>
+            </div>
+            <div class="it" style="--i:7">
+              <span class="tag tag--building">Building</span>
+              <span class="it-t">Refinements from closed testing feedback</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hangs off September as a marker, not a bullet. -->
+        <div class="ms" data-beat="3">
+          <span class="tag tag--building">Building</span>
+          <p class="ms-t">Closed user testing &mdash; end of September</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- UNDATED WORK — detached, dashed, off the spine entirely -->
+    <div class="undated" data-beat="4">
+      <p class="mono band-label band-label--q">Beyond November &mdash; no fixed dates yet</p>
+      <div class="seq stagger">
+        <div class="sq" style="--i:0">
+          <span class="tag tag--planned">Planned</span>
+          <span class="sq-t">Full CD sheet generation</span>
+        </div>
+        <i class="sq-conn" style="--i:1"></i>
+        <div class="sq" style="--i:2">
+          <span class="tag tag--planned">Planned</span>
+          <span class="sq-t">Point cloud to BIM object substitution</span>
+        </div>
+        <i class="sq-conn" style="--i:3"></i>
+        <div class="sq" style="--i:4">
+          <span class="tag tag--planned">Planned</span>
+          <span class="sq-t">Collaboration</span>
+        </div>
+        <i class="sq-conn" style="--i:5"></i>
+        <div class="sq" style="--i:6">
+          <span class="tag tag--planned">Planned</span>
+          <span class="sq-t">Clash detection</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+#s14 .band-label { color: var(--neu); }
+#s14 .band-label--q { color: var(--ink-3); }
+
+#s14 .livenow {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--rule);
+}
+#s14 .live-list { font-size: var(--t-small); color: var(--ink); }
+
+/* ---- dated track: the spine is a single continuous rule ---- */
+#s14 .dated { display: flex; flex-direction: column; gap: var(--sp-3); }
+#s14 .track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-4);
+  border-top: 1px solid var(--neu-line);
+}
+#s14 .mo { position: relative; min-width: 0; padding-top: var(--sp-3); }
+#s14 .mo::before {
+  content: ""; position: absolute; top: -5px; left: 0;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--neu);
+  transition: background .45s var(--ease), box-shadow .45s var(--ease);
+}
+#s14 .mo-name { color: var(--ink-2); transition: color .45s var(--ease); }
+#s14 .mo.is-hot::before { background: var(--neu); box-shadow: 0 0 11px var(--neu); }
+#s14 .mo.is-hot .mo-name { color: var(--neu-bright); }
+
+#s14 .its {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+#s14 .it {
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-2); align-items: baseline;
+}
+#s14 .it-t { font-size: var(--t-body); line-height: 1.4; color: var(--ink); }
+
+/* ---- the one dated item an executive will care about ---- */
+#s14 .ms {
+  grid-column: 2 / span 2;
+  position: relative; align-self: start;
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--neu-line);
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--neu-dim), var(--bg-lift-fade));
+}
+#s14 .ms::before {
+  content: ""; position: absolute; left: 15px; top: calc(-1 * var(--sp-4));
+  width: 1px; height: var(--sp-4);
+  background: repeating-linear-gradient(180deg,
+    var(--neu-line) 0 3px, transparent 3px 6px);
+}
+#s14 .ms-t {
+  font-family: var(--font-display); font-size: var(--t-h3);
+  line-height: 1.25; letter-spacing: -.01em; font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---- undated: dashed, off-grid, deliberately quieter ---- */
+#s14 .undated {
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed var(--rule-strong);
+}
+/* Items size to content and start indented, so they read as a flowing chain
+   and can NEVER line up under the month columns above — an undated item
+   sitting in the "October" column would read as scheduled for October. */
+#s14 .seq {
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  padding-left: clamp(20px, 4vw, 68px);
+}
+#s14 .sq {
+  flex: 0 1 auto; min-width: 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: var(--sp-2);
+}
+#s14 .sq-t { font-size: var(--t-body); line-height: 1.4; color: var(--ink-2); }
+#s14 .sq-conn {
+  flex: 0 0 auto; align-self: flex-start; margin-top: .85em;
+  width: clamp(14px, 2.2vw, 34px); height: 1px;
+  background: repeating-linear-gradient(90deg,
+    var(--ink-4) 0 3px, transparent 3px 7px);
+}
+
+@media (max-width: 1000px) {
+  #s14 .track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #s14 .ms { grid-column: 1 / span 2; }
+  #s14 .ms::before { display: none; }
+  #s14 .seq { flex-wrap: wrap; }
+  #s14 .sq { flex: 1 1 40%; }
+}
+</style>
+
+<script>
+Neu10.register('s14', {
+  beat: function (el, n) {
+    /* The closed-testing beat lights its own month on the spine. */
+    el.querySelector('.mo[data-mo="sep"]').classList.toggle('is-hot', n >= 3);
+  },
+  leave: function (el) {
+    el.querySelector('.mo[data-mo="sep"]').classList.remove('is-hot');
+  }
+});
+</script>

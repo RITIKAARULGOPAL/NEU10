@@ -1,0 +1,216 @@
+<section class="slide" id="s08" data-act="IV"
+         data-title="AI-assisted design" data-dwell="4600">
+  <div class="slide-inner is-wide">
+    <div class="split">
+
+      <!-- ---------- left: the argument ---------- -->
+      <div class="colL">
+        <div class="stack">
+          <p class="eyebrow eyebrow--neu">Act IV &middot; Built for interiors</p>
+          <h1 class="h1">AI-assisted design</h1>
+        </div>
+
+        <div class="stack">
+          <div class="cap" data-beat="2">
+            <div class="cap-head">
+              <span class="mono">In the product today</span>
+              <span class="tag tag--live">Live</span>
+            </div>
+            <p class="lede">
+              Parametric modelling driven by an AI harness &mdash; geometry
+              adjusts against defined parameters
+              <span class="hi-loss">instead of being manually redrawn.</span>
+            </p>
+          </div>
+
+          <div class="ask" data-beat="3">
+            <p class="body">Users query the model in natural language &mdash;</p>
+            <div class="qs stagger">
+              <span class="q" style="--i:0">how many rooms exceed 200 sq ft</span>
+              <span class="q" style="--i:1">show me all doors on floor 2</span>
+            </div>
+            <p class="body">&mdash; rather than manually searching or filtering.</p>
+          </div>
+        </div>
+
+        <div class="cap cap--road" data-beat="5">
+          <div class="cap-head">
+            <span class="mono">On the roadmap</span>
+            <span class="tag tag--planned">Planned</span>
+          </div>
+          <p class="small">
+            Auto-generating layouts from a brief, automated clash detection,
+            and optimisation suggestions.
+          </p>
+        </div>
+      </div>
+
+      <!-- ---------- right: the evidence ---------- -->
+      <div class="colR">
+        <div class="video-frame">
+          <video class="vid" muted playsinline preload="auto"
+                 src="assets/ai-harness.mp4"></video>
+          <div class="video-placeholder">
+            <span class="video-placeholder-mark"></span>
+            Video &mdash; assets/ai-harness.mp4
+          </div>
+        </div>
+
+        <div class="vstrip" data-beat="4">
+          <div class="stat">
+            <div class="stat-num" data-count>90%</div>
+            <p class="stat-cap">
+              reduction in the time required to build a parametric model
+              library, against a conventional library &mdash; the harness
+              generates and adjusts it instead of it being built by hand.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---- Act IV video template (shared idiom with #s09 / #s10) ---- */
+#s08 .split { grid-template-columns: minmax(0,1.04fr) minmax(0,1fr); }
+#s08 .colL { display: flex; flex-direction: column; gap: var(--sp-5); min-width: 0; }
+#s08 .colR { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+
+/* status block — a labelled capability that always carries its tag */
+#s08 .cap { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s08 .cap p { text-wrap: pretty; }
+#s08 .cap-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--neu-line);
+}
+#s08 .cap-head .mono { color: var(--neu); }
+#s08 .cap--road .cap-head { border-bottom-color: var(--rule); }
+#s08 .cap--road .cap-head .mono { color: var(--ink-3); }
+#s08 .cap--road .small { color: var(--ink-2); }
+
+/* natural-language queries — set as things you actually type */
+#s08 .ask { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s08 .qs { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-1); }
+#s08 .q {
+  font-family: var(--font-mono);
+  font-size: var(--t-body);
+  letter-spacing: .01em;
+  text-transform: none;
+  color: var(--neu-bright);
+  background: var(--neu-dim);
+  border: 1px solid var(--neu-line);
+  border-radius: 2px;
+  padding: .45em .8em .4em 2em;
+  position: relative;
+  white-space: nowrap;
+}
+#s08 .q::before {
+  content: "›"; position: absolute; left: .8em; color: var(--neu);
+}
+
+/* video: stack the placeholder over the video in a single grid cell */
+#s08 .video-frame > * { grid-area: 1 / 1; }
+#s08 .vid {
+  place-self: stretch;
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+#s08 .video-frame.is-ready .vid { opacity: 1; }
+#s08 .video-frame.is-ready .video-placeholder { opacity: 0; }
+#s08 .video-placeholder { position: relative; transition: opacity .4s var(--ease); }
+#s08 .video-placeholder-mark { top: 16px; left: 50%; margin-left: -3px; }
+
+/* the strip under the video carries the number */
+#s08 .vstrip {
+  border-left: 1px solid var(--neu-line);
+  padding-left: var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+#s08 .stat-cap { max-width: none; }
+
+@media (max-width: 1000px) {
+  #s08 .split { grid-template-columns: 1fr; gap: var(--sp-4); }
+  /* The video used to be display:none here. On a phone it is the most
+     persuasive thing on the slide, so it stays at full card width. */
+}
+</style>
+
+<script>
+Neu10.register('s08', (function () {
+  var PLAY_BEAT = 2;
+  var STAT_BEAT = 4;
+
+  /* holdPlay / releasePlay must stay balanced, or autoplay deadlocks. */
+  function hold(el)    { if (el.dataset.held === '1') return; el.dataset.held = '1'; Neu10.holdPlay(); }
+  function release(el) { if (el.dataset.held !== '1') return; el.dataset.held = '0'; Neu10.releasePlay(); }
+
+  /* The asset can finish loading before this slide is ever entered, in which
+     case the loadeddata event is long gone — readyState is the truth. */
+  function ready(el) {
+    var v = el.querySelector('.vid');
+    var ok = !v.error && v.readyState >= 2;
+    el.querySelector('.video-frame').classList.toggle('is-ready', ok);
+    return ok;
+  }
+
+  function maybePlay(el) {
+    var v = el.querySelector('.vid');
+    if (el.dataset.armed !== '1') return;
+    if (v.error) return;   /* genuinely no asset — placeholder stays */
+    if (el.dataset.started === '1') return;
+    el.dataset.started = '1';
+    hold(el);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      el.dataset.started = '0'; release(el);
+    });
+  }
+
+  function stopVideo(el) {
+    var v = el.querySelector('.vid');
+    el.dataset.armed = '0';
+    el.dataset.started = '0';
+    v.pause();
+    try { v.currentTime = 0; } catch (e) {}
+    release(el);
+  }
+
+  function wire(el) {
+    if (el.dataset.wired === '1') return;
+    el.dataset.wired = '1';
+    var v = el.querySelector('.vid');
+    v.addEventListener('loadeddata', function () { ready(el); maybePlay(el); });
+    /* 'playing' is the only honest moment to drop the placeholder: frames are
+       on screen. readyState alone was a guess, and a wrong one. */
+    v.addEventListener('playing', function () {
+      el.querySelector('.video-frame').classList.add('is-ready');
+    });
+    v.addEventListener('error',      function () { ready(el); release(el); });
+    v.addEventListener('ended',      function () { release(el); });
+  }
+
+  return {
+    enter: function (el) { wire(el); ready(el); },
+
+    beat: function (el, n) {
+      if (n < PLAY_BEAT) {
+        stopVideo(el);
+      } else {
+        el.dataset.armed = '1';
+        maybePlay(el);
+      }
+      if (n === STAT_BEAT) {
+        Neu10.countUp(el.querySelector('[data-count]'), 90, { suffix: '%' });
+      }
+    },
+
+    leave: function (el) {
+      stopVideo(el);
+      el.querySelector('[data-count]').textContent = '90%';
+    }
+  };
+})());
+</script>

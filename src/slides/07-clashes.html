@@ -1,0 +1,189 @@
+<section class="slide" id="s07" data-act="III"
+         data-title="Design issues should be solved before construction begins"
+         data-dwell="4600">
+  <div class="slide-inner is-wide">
+    <div class="split">
+
+      <div class="stack-lg">
+        <div class="stack">
+          <p class="eyebrow eyebrow--neu">Act III &middot; The shift</p>
+          <h1 class="h1" style="max-width:24ch">Design issues should be solved
+            before construction begins</h1>
+        </div>
+
+        <p class="thesis">Resolving issues / clashes during design process
+          and not execution.</p>
+
+        <p class="lede" data-beat="4" style="max-width:38ch">
+          Neu10 moves those conversations into
+          <span class="hi-neu">the design stage.</span>
+        </p>
+
+        <div class="road" data-beat="5">
+          <div class="row">
+            <span class="mono">Future roadmap includes</span>
+            <span class="tag tag--planned">Planned</span>
+          </div>
+          <p class="small" style="max-width:52ch">Automated clash detection that
+            identifies conflicts before execution begins&mdash;reducing costly
+            on-site changes and rework.</p>
+        </div>
+      </div>
+
+      <div class="stack-lg">
+        <div class="stack" data-beat="2">
+          <p class="mono">Today many coordination issues are only discovered</p>
+
+          <div class="track" data-no-advance>
+            <div class="track-line"><i class="track-fill"></i></div>
+            <div class="stops">
+              <button class="stop" data-s="0" data-w="6">
+                <b></b><span>during design</span></button>
+              <button class="stop" data-s="1" data-w="40">
+                <b></b><span>during contractor discussions</span></button>
+              <button class="stop" data-s="2" data-w="70">
+                <b></b><span>during site coordination</span></button>
+              <button class="stop is-on" data-s="3" data-w="100">
+                <b></b><span>during execution</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack" data-beat="3">
+          <p class="mono cost-head">Every late discovery increases</p>
+          <div class="bars">
+            <div class="bar"><span>Cost</span><i><em></em></i></div>
+            <div class="bar"><span>Delays</span><i><em></em></i></div>
+            <div class="bar"><span>Redesign effort</span><i><em></em></i></div>
+          </div>
+          <p class="footnote">Relative, not measured &mdash; the later the same
+            fix is found, the more of each it costs.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+#s07 .thesis {
+  font-family: var(--font-display);
+  font-size: var(--t-h3); font-weight: 600;
+  letter-spacing: -.012em; line-height: 1.3;
+  color: var(--neu-bright);
+  border-left: 2px solid var(--neu);
+  padding: .1em 0 .1em var(--sp-4);
+  max-width: 34ch;
+}
+
+#s07 .road { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+/* ---- when-was-it-found track ---- */
+#s07 .track { display: flex; flex-direction: column; gap: var(--sp-3); }
+#s07 .track-line {
+  position: relative; height: 2px; width: 100%;
+  background: var(--rule-strong); border-radius: 2px;
+}
+#s07 .track-fill {
+  position: absolute; inset: 0 auto 0 0; width: 100%;
+  background: linear-gradient(90deg, var(--neu), var(--loss));
+  border-radius: 2px;
+  transition: width .6s var(--ease-out);
+}
+#s07 .stops {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(6px, .8vw, 14px);
+  align-items: start;
+}
+#s07 .stop {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  display: flex; flex-direction: column; gap: .5em; align-items: flex-start;
+  text-align: left;
+}
+#s07 .stop b {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--ink-4);
+  margin-top: -15px;
+  transition: background .3s, border-color .3s, transform .3s;
+}
+#s07 .stop span {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-4); line-height: 1.35;
+  transition: color .3s;
+}
+#s07 .stop:hover span { color: var(--ink-3); }
+#s07 .stop.is-on b {
+  background: var(--loss); border-color: var(--loss); transform: scale(1.35);
+}
+#s07 .stop.is-on span { color: var(--ink); }
+/* Found during design is the good case — it reads blue, not orange. */
+#s07 .stop[data-s="0"].is-on b {
+  background: var(--neu-bright); border-color: var(--neu-bright);
+}
+#s07 .stop[data-s="0"].is-on span { color: var(--neu-bright); }
+
+/* ---- what it costs ---- */
+#s07 .cost-head { color: var(--loss); transition: color .4s var(--ease); }
+#s07 .bars { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s07 .bar { display: grid; grid-template-columns: 9.5em 1fr; gap: var(--sp-3); align-items: center; }
+#s07 .bar span { font-size: var(--t-small); color: var(--ink-2); }
+#s07 .bar i {
+  display: block; height: 7px; width: 100%;
+  background: var(--fill-subtle); border-radius: 4px; overflow: hidden;
+}
+#s07 .bar em {
+  display: block; height: 100%; width: 100%;
+  background: var(--loss); border-radius: 4px;
+  transition: width .6s var(--ease-out), background .5s var(--ease);
+}
+#s07 .bars.is-early em { background: var(--neu); }
+</style>
+
+<script>
+Neu10.register('s07', (function () {
+  var DEFAULT_STOP = 3;   // status quo: found during execution
+
+  function apply(el, idx) {
+    var stops = Array.from(el.querySelectorAll('.stop'));
+    var target = stops[idx];
+    var w = parseInt(target.getAttribute('data-w'), 10);
+
+    stops.forEach(function (s) { s.classList.toggle('is-on', s === target); });
+    el.querySelector('.track-fill').style.width = w + '%';
+
+    var bars = el.querySelector('.bars');
+    bars.classList.toggle('is-early', idx === 0);
+    // Cost, delays and redesign effort each scale with how late it was found.
+    var factors = [1, 0.88, 0.74];
+    Array.from(bars.querySelectorAll('em')).forEach(function (fill, k) {
+      fill.style.width = Math.max(4, Math.round(w * factors[k])) + '%';
+    });
+
+    el.querySelector('.cost-head').style.color =
+      idx === 0 ? 'var(--neu)' : 'var(--loss)';
+    el.dataset.stop = String(idx);
+  }
+
+  return {
+    enter: function (el) {
+      if (el.dataset.wired !== '1') {
+        el.dataset.wired = '1';
+        el.querySelectorAll('.stop').forEach(function (b) {
+          b.addEventListener('click', function (e) {
+            e.stopPropagation();
+            apply(el, parseInt(b.getAttribute('data-s'), 10));
+          });
+        });
+      }
+      apply(el, DEFAULT_STOP);
+    },
+    beat: function (el, n) {
+      // Beat 4 is the argument: the same issue, found in design instead.
+      if (n >= 4) { if (el.dataset.stop !== '0') apply(el, 0); }
+      else if (el.dataset.stop !== String(DEFAULT_STOP)) apply(el, DEFAULT_STOP);
+    },
+    leave: function (el) { apply(el, DEFAULT_STOP); }
+  };
+})());
+</script>

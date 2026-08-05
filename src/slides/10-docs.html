@@ -1,0 +1,193 @@
+<section class="slide" id="s10" data-act="IV"
+         data-title="Documentation and quantities become an output, not a task"
+         data-dwell="4600">
+  <div class="slide-inner is-wide">
+    <div class="split">
+
+      <!-- ---------- left: the argument ---------- -->
+      <div class="colL">
+        <div class="stack">
+          <p class="eyebrow eyebrow--neu">Act IV &middot; Built for interiors</p>
+          <h1 class="h1">Documentation and quantities become an output, not a task</h1>
+        </div>
+
+        <div class="cap cap--road" data-beat="2">
+          <div class="cap-head">
+            <span class="mono">Not in the product today</span>
+            <span class="tag tag--planned">Planned</span>
+          </div>
+          <p class="lede">
+            Full CD sheet sets &mdash; plans, sections, elevations and schedules
+            &mdash; generated automatically from the same model used for planning
+            and 3D, instead of being redrawn through
+            <span class="hi-loss">the AutoCAD to SketchUp to AutoCAD loop.</span>
+          </p>
+          <p class="body" data-beat="3">
+            It removes the manual redraw and re-annotation step entirely.
+            <span class="hi">Construction documentation becomes an output of the
+            model</span> rather than a separate drafting effort.
+          </p>
+        </div>
+
+        <div class="cap cap--build" data-beat="4">
+          <div class="cap-head">
+            <span class="mono">September to October</span>
+            <span class="tag tag--building">Building</span>
+          </div>
+          <p class="h3">Detailed cost module</p>
+          <p class="small">
+            with BOQ and MEP folded into that flow instead of running as
+            separate detours.
+          </p>
+        </div>
+      </div>
+
+      <!-- ---------- right: the evidence ---------- -->
+      <div class="colR">
+        <div class="video-frame">
+          <video class="vid" muted playsinline preload="auto"
+                 src="assets/costing-cd.mp4"></video>
+          <div class="video-placeholder">
+            <span class="video-placeholder-mark"></span>
+            Video &mdash; assets/costing-cd.mp4
+          </div>
+        </div>
+
+        <div class="vstrip" data-beat="5">
+          <div class="stat">
+            <p class="stat-key">Projected</p>
+            <div class="stat-num stat-num--sm">60&ndash;80%</div>
+            <p class="stat-cap">reduction in CD drafting time once built.</p>
+          </div>
+          <p class="footnote">
+            Directional estimate based on comparable automated BIM workflows
+            &mdash; not measured data.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---- Act IV video template (shared idiom with #s08 / #s09) ---- */
+#s10 .split { grid-template-columns: minmax(0,1.04fr) minmax(0,1fr); }
+#s10 .colL { display: flex; flex-direction: column; gap: var(--sp-5); min-width: 0; }
+#s10 .colR { display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+
+/* status block — a labelled capability that always carries its tag.
+   Nothing on this slide ships today, so the tags run one size up. */
+#s10 .cap { display: flex; flex-direction: column; gap: var(--sp-2); }
+#s10 .cap p { text-wrap: pretty; }
+#s10 .cap-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--rule-strong);
+}
+#s10 .tag { font-size: var(--t-small); }
+#s10 .cap--road .cap-head .mono  { color: var(--ink-3); }
+#s10 .cap--build .cap-head .mono { color: var(--warn); }
+#s10 .cap--build .h3 { color: var(--ink); }
+#s10 .cap--build .small { color: var(--ink-2); }
+
+/* video: stack the placeholder over the video in a single grid cell */
+#s10 .video-frame > * { grid-area: 1 / 1; }
+#s10 .vid {
+  place-self: stretch;
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+#s10 .video-frame.is-ready .vid { opacity: 1; }
+#s10 .video-frame.is-ready .video-placeholder { opacity: 0; }
+#s10 .video-placeholder { position: relative; transition: opacity .4s var(--ease); }
+#s10 .video-placeholder-mark { top: 16px; left: 50%; margin-left: -3px; }
+
+/* the strip under the video carries the number — dashed, because the
+   figure is projected rather than measured */
+#s10 .vstrip {
+  border-left: 1px dashed var(--ink-4);
+  padding-left: var(--sp-4);
+  display: flex; flex-direction: column; gap: var(--sp-3);
+}
+#s10 .stat-num { color: var(--neu); }
+#s10 .stat-cap { max-width: none; }
+/* the hedge has to be readable, or it isn't a hedge */
+#s10 .footnote { color: var(--ink-3); }
+
+@media (max-width: 1000px) {
+  #s10 .split { grid-template-columns: 1fr; gap: var(--sp-4); }
+  /* The video used to be display:none here. On a phone it is the most
+     persuasive thing on the slide, so it stays at full card width. */
+}
+</style>
+
+<script>
+Neu10.register('s10', (function () {
+  var PLAY_BEAT = 2;
+
+  /* holdPlay / releasePlay must stay balanced, or autoplay deadlocks. */
+  function hold(el)    { if (el.dataset.held === '1') return; el.dataset.held = '1'; Neu10.holdPlay(); }
+  function release(el) { if (el.dataset.held !== '1') return; el.dataset.held = '0'; Neu10.releasePlay(); }
+
+  /* The asset can finish loading before this slide is ever entered, in which
+     case the loadeddata event is long gone — readyState is the truth. */
+  function ready(el) {
+    var v = el.querySelector('.vid');
+    var ok = !v.error && v.readyState >= 2;
+    el.querySelector('.video-frame').classList.toggle('is-ready', ok);
+    return ok;
+  }
+
+  function maybePlay(el) {
+    var v = el.querySelector('.vid');
+    if (el.dataset.armed !== '1') return;
+    if (v.error) return;   /* genuinely no asset — placeholder stays */
+    if (el.dataset.started === '1') return;
+    el.dataset.started = '1';
+    hold(el);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      el.dataset.started = '0'; release(el);
+    });
+  }
+
+  function stopVideo(el) {
+    var v = el.querySelector('.vid');
+    el.dataset.armed = '0';
+    el.dataset.started = '0';
+    v.pause();
+    try { v.currentTime = 0; } catch (e) {}
+    release(el);
+  }
+
+  function wire(el) {
+    if (el.dataset.wired === '1') return;
+    el.dataset.wired = '1';
+    var v = el.querySelector('.vid');
+    v.addEventListener('loadeddata', function () { ready(el); maybePlay(el); });
+    /* 'playing' is the only honest moment to drop the placeholder: frames are
+       on screen. readyState alone was a guess, and a wrong one. */
+    v.addEventListener('playing', function () {
+      el.querySelector('.video-frame').classList.add('is-ready');
+    });
+    v.addEventListener('error',      function () { ready(el); release(el); });
+    v.addEventListener('ended',      function () { release(el); });
+  }
+
+  return {
+    enter: function (el) { wire(el); ready(el); },
+
+    beat: function (el, n) {
+      if (n < PLAY_BEAT) {
+        stopVideo(el);
+      } else {
+        el.dataset.armed = '1';
+        maybePlay(el);
+      }
+    },
+
+    leave: function (el) { stopVideo(el); }
+  };
+})());
+</script>

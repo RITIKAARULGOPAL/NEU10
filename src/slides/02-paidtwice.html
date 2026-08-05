@@ -1,0 +1,207 @@
+<section class="slide" id="s02" data-act="I"
+         data-title="Every design change gets paid for multiple times" data-dwell="4200">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--loss">Act I &middot; The bottleneck</p>
+      <h1 class="h1" style="max-width:30ch">Every design change gets<br>paid for multiple times</h1>
+    </div>
+
+    <div class="work" data-beat="2">
+      <div class="stack">
+        <p class="mono">A simple wall movement today means</p>
+        <div class="plan-box">
+          <svg viewBox="0 0 340 190" class="mini" role="img" aria-label="Plan with one wall moved">
+            <rect class="shell" x="12" y="12" width="316" height="166" />
+            <g class="furn">
+              <rect x="36" y="40" width="46" height="22" />
+              <rect x="36" y="78" width="46" height="22" />
+              <rect x="36" y="116" width="46" height="22" />
+              <rect x="228" y="58" width="72" height="44" rx="2" />
+            </g>
+            <!-- ghost of where the wall was -->
+            <line class="ghost" x1="150" y1="12" x2="150" y2="112" />
+            <line class="ghost" x1="150" y1="146" x2="150" y2="178" />
+            <!-- the wall that moves -->
+            <g class="wall">
+              <line x1="150" y1="12" x2="150" y2="112" />
+              <line x1="150" y1="146" x2="150" y2="178" />
+            </g>
+            <text class="tag-x" x="158" y="26">WALL</text>
+          </svg>
+          <button class="ctl move-btn" data-no-advance>Move the wall &rarr;</button>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="spread">
+          <p class="mono">Then, by hand</p>
+          <p class="tally"><b class="tally-n">0</b> <span>pieces of rework</span></p>
+        </div>
+        <div class="tasks">
+          <div class="task" data-t="0"><i>01</i><span>Update CAD</span><em>redone</em></div>
+          <div class="task" data-t="1"><i>02</i><span>Update SketchUp</span><em>redone</em></div>
+          <div class="task" data-t="2"><i>03</i><span>Update Documentation</span><em>redone</em></div>
+          <div class="task" data-t="3"><i>04</i><span>Update BOQ</span><em>redone</em></div>
+          <div class="task" data-t="4"><i>05</i><span>Coordinate MEP</span><em>redone</em></div>
+          <div class="task" data-t="5"><i>06</i><span>Recheck drawings</span><em>redone</em></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede" data-beat="4" style="max-width:80ch">
+      The same decision is <span class="hi-loss">recreated repeatedly</span>
+      instead of evolving from one source.
+    </p>
+
+  </div>
+</section>
+
+<style>
+#s02 .work {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1fr);
+  gap: clamp(24px, 3.4vw, 60px);
+  align-items: start;
+}
+
+#s02 .plan-box {
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  align-items: flex-start;
+}
+#s02 .mini {
+  width: 100%; max-width: 340px; height: auto;
+  background: var(--bg-lift);
+  border: 1px solid var(--rule); border-radius: 4px;
+}
+#s02 .mini line, #s02 .mini rect {
+  fill: none; stroke: var(--ink-4); stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+#s02 .mini .furn rect { stroke: var(--ink-4); stroke-width: 1; opacity: .75; }
+#s02 .mini .ghost {
+  stroke: var(--loss); stroke-dasharray: 3 3; opacity: 0;
+  transition: opacity .4s var(--ease);
+}
+#s02 .mini .wall line { stroke: var(--ink-2); stroke-width: 3; }
+#s02 .mini .wall {
+  transition: transform .55s var(--ease-out);
+  transform: translateX(0);
+}
+#s02 .mini .tag-x {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .16em;
+  fill: var(--ink-4);
+}
+#s02 .mini.is-moved .ghost { opacity: .9; }
+#s02 .mini.is-moved .wall { transform: translateX(58px); }
+#s02 .mini.is-moved .wall line { stroke: var(--loss-bright); }
+
+#s02 .tally {
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+  display: flex; align-items: baseline; gap: .5em;
+}
+#s02 .tally b {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--t-h2); letter-spacing: -.03em;
+  color: var(--ink-4); font-variant-numeric: tabular-nums;
+  transition: color .4s var(--ease);
+}
+#s02 .tally.is-hot b { color: var(--loss-bright); }
+
+#s02 .tasks { display: flex; flex-direction: column; }
+#s02 .task {
+  display: grid; grid-template-columns: 2.4em 1fr auto;
+  align-items: baseline; gap: var(--sp-3);
+  padding: .5em 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--t-body); color: var(--ink-3);
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+#s02 .task i {
+  font-family: var(--font-mono); font-style: normal;
+  font-size: var(--t-label); letter-spacing: .12em; color: var(--ink-4);
+  transition: color .3s var(--ease);
+}
+#s02 .task em {
+  font-family: var(--font-mono); font-style: normal;
+  font-size: var(--t-label); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--loss); opacity: 0;
+  transition: opacity .3s var(--ease);
+}
+#s02 .task em::before { content: "\21BB  "; }
+#s02 .task.is-fired {
+  color: var(--ink); border-color: var(--loss-line);
+}
+#s02 .task.is-fired i  { color: var(--loss); }
+#s02 .task.is-fired em { opacity: 1; }
+
+@media (max-width: 960px) {
+  #s02 .work { grid-template-columns: 1fr; }
+  /* The plan and its "Move the wall" button used to be display:none here —
+     which removed the only interaction on the slide. Kept, full width. */
+  #s02 .mini { max-width: 100%; }
+  #s02 .move-btn { width: 100%; justify-content: center; }
+}
+</style>
+
+<script>
+Neu10.register('s02', (function () {
+  var timers = [];
+
+  function clear() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function reset(el) {
+    clear();
+    el.querySelector('.mini').classList.remove('is-moved');
+    el.querySelectorAll('.task').forEach(function (t) { t.classList.remove('is-fired'); });
+    el.querySelector('.tally').classList.remove('is-hot');
+    el.querySelector('.tally-n').textContent = '0';
+    el.dataset.changes = '0';
+  }
+
+  /* One change fires six pieces of rework, staggered so the cost accumulates
+     visibly rather than appearing all at once. */
+  function fire(el) {
+    clear();
+    var mini = el.querySelector('.mini');
+    var tasks = Array.from(el.querySelectorAll('.task'));
+    var tally = el.querySelector('.tally');
+    var out = el.querySelector('.tally-n');
+    var changes = parseInt(el.dataset.changes || '0', 10) + 1;
+    el.dataset.changes = String(changes);
+
+    mini.classList.toggle('is-moved', changes % 2 === 1);
+    tally.classList.add('is-hot');
+
+    tasks.forEach(function (t) { t.classList.remove('is-fired'); });
+    tasks.forEach(function (t, k) {
+      timers.push(setTimeout(function () {
+        t.classList.add('is-fired');
+        out.textContent = String((changes - 1) * 6 + k + 1);
+      }, 260 + k * 150));
+    });
+  }
+
+  return {
+    enter: function (el) {
+      if (el.dataset.wired !== '1') {
+        el.dataset.wired = '1';
+        el.querySelector('.move-btn').addEventListener('click', function (e) {
+          e.stopPropagation();
+          fire(el);
+        });
+      }
+      reset(el);
+    },
+    beat: function (el, n) {
+      // Beat 3 fires it once unprompted, so the slide works in autoplay too.
+      if (n >= 3 && el.dataset.changes === '0') fire(el);
+    },
+    leave: reset
+  };
+})());
+</script>

@@ -1,0 +1,131 @@
+<section class="slide" id="s01" data-act="I"
+         data-title="The Office Interior Design Bottleneck">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--loss">Act I &middot; The bottleneck</p>
+      <h1 class="h-display" style="max-width:22ch">The Office Interior<br>Design Bottleneck</h1>
+    </div>
+
+    <div class="stack" data-beat="2">
+      <p class="mono">Every office project goes through the same cycle</p>
+      <div class="cycle">
+        <div class="cy-node" style="--i:0">Design</div>
+        <i class="cy-conn"></i>
+        <div class="cy-node" style="--i:1">Model</div>
+        <i class="cy-conn"></i>
+        <div class="cy-node" style="--i:2">Documentation</div>
+        <i class="cy-conn"></i>
+        <div class="cy-node" style="--i:3">BOQ</div>
+        <i class="cy-conn"></i>
+        <div class="cy-node" style="--i:4">MEP</div>
+        <i class="cy-conn"></i>
+        <div class="cy-node" style="--i:5">Site Execution</div>
+      </div>
+    </div>
+
+    <p class="lede" data-beat="3" style="max-width:74ch">
+      But every change made during design creates work across
+      <span class="hi-loss">multiple disconnected tools.</span>
+    </p>
+
+    <div class="stack" data-beat="4">
+      <p class="mono result-label">Result?</p>
+      <div class="results stagger">
+        <div class="res" style="--i:0"><b>01</b>Redrawing</div>
+        <div class="res" style="--i:1"><b>02</b>Manual coordination</div>
+        <div class="res" style="--i:2"><b>03</b>Version confusion</div>
+        <div class="res" style="--i:3"><b>04</b>Late issue discovery</div>
+        <div class="res" style="--i:4"><b>05</b>Delays during execution</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+#s01 .cycle {
+  display: flex; align-items: center; gap: clamp(6px, .7vw, 12px);
+  width: 100%;
+}
+#s01 .cy-node {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--bg-lift);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: .85em .9em .8em;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: border-color .5s var(--ease), color .5s var(--ease),
+              background .5s var(--ease);
+}
+#s01 .cy-conn {
+  flex: 1 1 auto; min-width: 12px; height: 1px;
+  background: var(--rule-strong);
+  position: relative;
+  transition: background .45s var(--ease);
+}
+#s01 .cy-conn::after {
+  content: ""; position: absolute; right: 0; top: -3.5px;
+  border-left: 5px solid var(--rule-strong);
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  transition: border-left-color .45s var(--ease), opacity .3s;
+}
+/* Beat 3 — the cycle is revealed as disconnected, not continuous. */
+#s01 .cycle.is-broken .cy-node {
+  border-color: var(--loss-line);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--loss-dim), var(--bg-lift));
+}
+#s01 .cycle.is-broken .cy-conn {
+  background: repeating-linear-gradient(90deg,
+    var(--loss-line) 0 3px, transparent 3px 7px);
+}
+#s01 .cycle.is-broken .cy-conn::after { opacity: 0; }
+#s01 .cycle.is-broken .cy-conn::before {
+  content: ""; position: absolute; left: 50%; top: -6px;
+  width: 1px; height: 13px; background: var(--loss);
+  transform: translateX(-50%) rotate(22deg);
+  animation: s01-nick .4s var(--ease-out) both;
+}
+@keyframes s01-nick { from { opacity: 0; height: 0; } to { opacity: 1; height: 13px; } }
+
+#s01 .result-label { color: var(--loss); }
+#s01 .results {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 22px);
+}
+#s01 .res {
+  display: flex; flex-direction: column; gap: .5em;
+  font-size: var(--t-body);
+  color: var(--ink);
+  line-height: 1.3;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--loss-line);
+}
+#s01 .res b {
+  font-family: var(--font-mono); font-weight: 400;
+  font-size: var(--t-label); letter-spacing: .14em;
+  color: var(--loss);
+}
+@media (max-width: 900px) {
+  #s01 .results { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  #s01 .cycle { flex-wrap: wrap; }
+}
+</style>
+
+<script>
+Neu10.register('s01', {
+  beat: function (el, n) {
+    el.querySelector('.cycle').classList.toggle('is-broken', n >= 3);
+  },
+  leave: function (el) {
+    el.querySelector('.cycle').classList.remove('is-broken');
+  }
+});
+</script>
