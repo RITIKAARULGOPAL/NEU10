@@ -26,13 +26,12 @@ Poke at them if he asks a question.
 
 ## The three videos
 
-Drop them in `assets/` using the exact filenames in `assets/README.txt`. No
-rebuild needed. Until then those screens show labelled placeholders and the deck
-still runs end to end.
+Installed in `assets/` — see `assets/README.txt` for specs and sources. To
+replace one, overwrite it keeping the same filename. No rebuild needed.
 
 ## Structure
 
-Five acts, fifteen screens.
+Five acts, fourteen screens.
 
 - **I — The bottleneck.** The cycle every office project runs, and the fact that
   one change gets paid for six times.
@@ -42,7 +41,7 @@ Five acts, fifteen screens.
   things are. Clashes resolved in design, not execution.
 - **IV — Built for interiors.** AI harness, point cloud, documentation and
   costing, adoption barriers.
-- **V — The case.** Business impact, why Officebanao, roadmap, close.
+- **V — The case.** Business impact, roadmap, close.
 
 ## On a phone
 
