@@ -114,6 +114,32 @@
 </section>
 
 <style>
+/* White card for this slide only — redefine the tokens the rest of #s07's
+   markup already reads (ink scale, rule, fill-subtle) so every existing
+   component goes dark-on-white automatically instead of hand-patching each
+   selector. --loss-ink is local-only: the stock --loss orange is a shape
+   colour tuned for the black deck and reads too light as small text on
+   white, so cost-head gets its own darker tier. */
+#s07 {
+  --ink:         #15161B;
+  --ink-2:       #454B58;
+  --ink-3:       #676E7C;
+  --ink-4:       #9096A3;
+  --rule:        rgba(20,22,28,.12);
+  --rule-strong: rgba(20,22,28,.22);
+  --fill-subtle: rgba(20,22,28,.06);
+  --loss-ink:    #B03E22;
+}
+#s07 .slide-inner {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: clamp(28px, 4vh, 48px) clamp(32px, 4vw, 64px);
+}
+/* .h1 has no color rule of its own in tokens.css — it just inherits body's
+   white, which the --ink override above can't reach since inheritance
+   carries the already-resolved colour, not a live var() reference. */
+#s07 .h1 { color: var(--ink); }
+
 #s07 .thesis {
   font-family: var(--font-display);
   font-size: var(--t-h3); font-weight: 600;
@@ -132,7 +158,7 @@
    plot. Heights are computed once in the script from STAGES below — see
    the comment there for why a per-stage hand-set table replaced a single
    multiplier (it collapsed the early stages into indistinguishable slivers). */
-#s07 .cost-head { color: var(--loss); }
+#s07 .cost-head { color: var(--loss-ink); }
 #s07 .bars { display: flex; flex-direction: column; gap: var(--sp-2); }
 
 #s07 .bar-plot {
