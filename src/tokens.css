@@ -29,11 +29,13 @@
      This pairing carries the argument, so do not mix freely.  */
   --loss:        #E4633C;
   --loss-bright: #FF8A62;
+  --loss-pale:   #FFC4B0;  /* third solid tier — stacked-segment charts (e.g. s07) */
   --loss-dim:    rgba(228,99,60,.13);
   --loss-line:   rgba(228,99,60,.34);
 
   --neu:        #6B9BFF;
   --neu-bright: #A9C5FF;
+  --neu-pale:   #D4E2FF;   /* third solid tier — stacked-segment charts (e.g. s07) */
   --neu-dim:    rgba(107,155,255,.13);
   --neu-line:   rgba(107,155,255,.34);
 

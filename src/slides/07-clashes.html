@@ -33,35 +33,69 @@
       <div class="stack-lg">
         <div class="stack" data-beat="2">
           <p class="mono">Today many coordination issues are only discovered</p>
-
-          <div class="track" data-no-advance>
-            <div class="track-line"><i class="track-fill"></i></div>
-            <div class="stops">
-              <button class="stop" data-s="0" data-w="6">
-                <b></b><span>during design</span></button>
-              <button class="stop" data-s="1" data-w="40">
-                <b></b><span>during contractor discussions</span></button>
-              <button class="stop" data-s="2" data-w="70">
-                <b></b><span>during site coordination</span></button>
-              <button class="stop is-on" data-s="3" data-w="100">
-                <b></b><span>during execution</span></button>
-            </div>
-          </div>
         </div>
 
+        <!-- All four stages shown together, not one at a time: cost, delays
+             and redesign effort stack into a single combined bar per stage,
+             so the escalation is visible in one glance instead of requiring
+             a click through four separate single-stage views. Beat 3 shows
+             the problem escalating (contractor -> site -> execution); beat 4
+             reveals the design-stage bar, small and blue, as the resolution
+             — timed with the "Neu10 moves those conversations into the
+             design stage" line on the left. -->
         <div class="stack" data-beat="3">
           <p class="mono cost-head">Every late discovery increases</p>
+
           <div class="bars" role="img"
-               aria-label="Relative cost, delays and redesign effort, by when the issue was found">
+               aria-label="Cost, delays and redesign effort combined, by when the
+               issue is found — smallest during design, rising through during
+               contractor discussions and during site coordination, largest
+               during execution">
             <div class="bar-plot">
-              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
-              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
-              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
+              <div class="bar-col" data-beat="4">
+                <div class="bar-track is-good">
+                  <i class="seg seg-cost"></i>
+                  <i class="seg seg-delay"></i>
+                  <i class="seg seg-redesign"></i>
+                </div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-track">
+                  <i class="seg seg-cost"></i>
+                  <i class="seg seg-delay"></i>
+                  <i class="seg seg-redesign"></i>
+                </div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-track">
+                  <i class="seg seg-cost"></i>
+                  <i class="seg seg-delay"></i>
+                  <i class="seg seg-redesign"></i>
+                </div>
+              </div>
+              <div class="bar-col">
+                <div class="bar-track">
+                  <i class="seg seg-cost"></i>
+                  <i class="seg seg-delay"></i>
+                  <i class="seg seg-redesign"></i>
+                </div>
+              </div>
             </div>
+
             <div class="bar-labels">
-              <span>Cost</span><span>Delays</span><span>Redesign effort</span>
+              <span data-beat="4">during design</span>
+              <span>during contractor discussions</span>
+              <span>during site coordination</span>
+              <span>during execution</span>
+            </div>
+
+            <div class="bar-legend">
+              <span class="lg-item"><i class="lg-chip lg-cost"></i>Cost</span>
+              <span class="lg-item"><i class="lg-chip lg-delay"></i>Delays</span>
+              <span class="lg-item"><i class="lg-chip lg-redesign"></i>Redesign effort</span>
             </div>
           </div>
+
           <p class="footnote">Relative, not measured &mdash; the later the same
             fix is found, the more of each it costs.</p>
         </div>
@@ -84,63 +118,18 @@
 
 #s07 .road { display: flex; flex-direction: column; gap: var(--sp-2); }
 
-/* ---- when-was-it-found track ---- */
-#s07 .track { display: flex; flex-direction: column; gap: var(--sp-3); }
-#s07 .track-line {
-  position: relative; height: 2px; width: 100%;
-  background: var(--rule-strong); border-radius: 2px;
-}
-#s07 .track-fill {
-  position: absolute; inset: 0 auto 0 0; width: 100%;
-  background: linear-gradient(90deg, var(--neu), var(--loss));
-  border-radius: 2px;
-  transition: width .6s var(--ease-out);
-}
-#s07 .stops {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(6px, .8vw, 14px);
-  align-items: start;
-}
-#s07 .stop {
-  background: none; border: 0; padding: 0; cursor: pointer;
-  display: flex; flex-direction: column; gap: .5em; align-items: flex-start;
-  text-align: left;
-}
-#s07 .stop b {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--bg); border: 1.5px solid var(--ink-4);
-  margin-top: -15px;
-  transition: background .3s, border-color .3s, transform .3s;
-}
-#s07 .stop span {
-  font-family: var(--font-mono); font-size: var(--t-label);
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-4); line-height: 1.35;
-  transition: color .3s;
-}
-#s07 .stop:hover span { color: var(--ink-3); }
-#s07 .stop.is-on b {
-  background: var(--loss); border-color: var(--loss); transform: scale(1.35);
-}
-#s07 .stop.is-on span { color: var(--ink); }
-/* Found during design is the good case — it reads blue, not orange. */
-#s07 .stop[data-s="0"].is-on b {
-  background: var(--neu-bright); border-color: var(--neu-bright);
-}
-#s07 .stop[data-s="0"].is-on span { color: var(--neu-bright); }
-
-/* ---- what it costs: a real bar chart, not three thin slivers ----
-   The old horizontal bars were 7px tall, so at "during design" (4-6% fill)
-   the three metrics were 2-3px slivers — indistinguishable from each other.
-   A vertical chart with a shared baseline reads correctly at every stop,
-   including the best case, because the height scale (see STOP_HEIGHTS in
-   the script) keeps a visible floor and real gaps between categories. */
-#s07 .cost-head { color: var(--loss); transition: color .4s var(--ease); }
+/* ---- the combined escalation chart ----
+   One stacked bar per stage (Cost bottom / Delays / Redesign effort top),
+   scaled so the tallest stack (during execution) reaches the top of the
+   plot. Heights are computed once in the script from STAGES below — see
+   the comment there for why a per-stage hand-set table replaced a single
+   multiplier (it collapsed the early stages into indistinguishable slivers). */
+#s07 .cost-head { color: var(--loss); }
 #s07 .bars { display: flex; flex-direction: column; gap: var(--sp-2); }
 
 #s07 .bar-plot {
   display: flex; align-items: flex-end;
-  gap: clamp(16px, 2.4vw, 32px);
+  gap: clamp(10px, 1.6vw, 22px);
   height: clamp(96px, 15vh, 148px);
   border-bottom: 1px solid var(--rule);
 }
@@ -149,87 +138,107 @@
   display: flex; justify-content: center;
 }
 #s07 .bar-track {
-  width: clamp(26px, 3.6vw, 42px); height: 100%;
-  display: flex; align-items: flex-end;
+  width: clamp(30px, 4.2vw, 48px); height: 100%;
+  display: flex; flex-direction: column-reverse;
   background: var(--fill-subtle);
   border-radius: 4px 4px 1px 1px;
   overflow: hidden;
 }
-#s07 .bar-fill {
+#s07 .seg {
   display: block; width: 100%; height: 0%;
-  background: var(--loss);
-  border-radius: 3px 3px 0 0;
   transition: height .6s var(--ease-out), background .5s var(--ease);
 }
-#s07 .bars.is-early .bar-fill { background: var(--neu); }
+/* Default (the three problem stages): orange, darkest at the base. */
+#s07 .seg-cost     { background: var(--loss); }
+#s07 .seg-delay    { background: var(--loss-bright); }
+#s07 .seg-redesign { background: var(--loss-pale); }
+/* The design-stage bar is the good case — same shade order, read in blue. */
+#s07 .bar-track.is-good .seg-cost     { background: var(--neu); }
+#s07 .bar-track.is-good .seg-delay    { background: var(--neu-bright); }
+#s07 .bar-track.is-good .seg-redesign { background: var(--neu-pale); }
 
 #s07 .bar-labels {
-  display: flex; gap: clamp(16px, 2.4vw, 32px);
+  display: flex; gap: clamp(10px, 1.6vw, 22px);
   padding-top: var(--sp-1);
 }
 #s07 .bar-labels span {
   flex: 1 1 0; min-width: 0;
-  font-size: var(--t-small); color: var(--ink-2);
-  text-align: center; line-height: 1.25;
+  font-family: var(--font-mono); font-size: var(--t-label);
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-4); line-height: 1.32;
+  text-align: center;
+}
+#s07 .bar-labels span:first-child { color: var(--neu-bright); }
+
+/* Hue-agnostic legend: shade intensity (not colour) is what it explains, so
+   it reads the same for the three orange stages and the one blue stage. */
+#s07 .bar-legend {
+  display: flex; flex-wrap: wrap;
+  gap: clamp(10px, 1.6vw, 20px);
+  padding-top: var(--sp-2);
+}
+#s07 .lg-item {
+  display: inline-flex; align-items: center; gap: .5em;
+  font-size: var(--t-small); color: var(--ink-3);
+}
+#s07 .lg-chip {
+  width: 9px; height: 9px; border-radius: 2px; display: inline-block;
+}
+#s07 .lg-cost     { background: var(--ink); }
+#s07 .lg-delay    { background: var(--ink-2); }
+#s07 .lg-redesign { background: var(--ink-4); }
+
+@media (max-width: 900px) {
+  #s07 .bar-labels span { font-size: 9px; }
+}
+/* Compact mode scrolls, so this only needs to clear the fixed bottom chrome
+   at rest (scroll top) rather than fit the frame outright — but the four
+   two-line labels plus a legend row made this the tallest thing on the card,
+   landing a few px under the opaque #footer-bar on first view. Shave it down
+   a little rather than let it look clipped before anyone realises they can
+   scroll. */
+@media (max-width: 820px) {
+  #s07 .bar-plot { height: clamp(74px, 11vh, 110px); gap: clamp(8px, 1.4vw, 16px); }
+  #s07 .bar-labels { gap: clamp(8px, 1.4vw, 16px); }
+  #s07 .bar-labels span { font-size: 8.5px; line-height: 1.22; }
+  #s07 .bar-legend { gap: clamp(8px, 1.4vw, 14px); padding-top: var(--sp-1); }
 }
 </style>
 
 <script>
 Neu10.register('s07', (function () {
-  var DEFAULT_STOP = 3;   // status quo: found during execution
-
-  /* Illustrative, not measured — the footnote says so and this is why: a
-     single multiplier against the track's 6/40/70/100 collapsed all three
-     bars into indistinguishable slivers at "during design". Each stop gets
-     its own hand-set [Cost, Delays, Redesign effort] so the order (Cost
-     always tallest) holds and every stop keeps a real, visible gap between
-     the three, including the best case. */
-  var STOP_HEIGHTS = [
-    [16, 12, 9],    // during design
-    [46, 36, 27],   // during contractor discussions
-    [72, 58, 45],   // during site coordination
-    [100, 82, 64]   // during execution
+  /* Illustrative, not measured — see the footnote. Each stage is its own
+     [Cost, Delays, Redesign effort]; stacking them shows how the combined
+     cost of the SAME issue grows the later it is caught, in one glance,
+     instead of a click-through of four separate single-stage views. Order
+     (Cost tallest, then Delays, then Redesign effort) matches the original
+     per-stage multipliers; the values themselves are hand-set per stage so
+     early stages keep a real, visible gap between all three segments. */
+  var STAGES = [
+    { cost: 16,  delay: 12, redesign: 9  },  // during design
+    { cost: 46,  delay: 36, redesign: 27 },  // during contractor discussions
+    { cost: 72,  delay: 58, redesign: 45 },  // during site coordination
+    { cost: 100, delay: 82, redesign: 64 }   // during execution
   ];
+  var MAX_TOTAL = Math.max.apply(null, STAGES.map(function (s) {
+    return s.cost + s.delay + s.redesign;
+  }));
 
-  function apply(el, idx) {
-    var stops = Array.from(el.querySelectorAll('.stop'));
-    var target = stops[idx];
-    var w = parseInt(target.getAttribute('data-w'), 10);
-
-    stops.forEach(function (s) { s.classList.toggle('is-on', s === target); });
-    el.querySelector('.track-fill').style.width = w + '%';
-
-    var bars = el.querySelector('.bars');
-    bars.classList.toggle('is-early', idx === 0);
-    var heights = STOP_HEIGHTS[idx];
-    Array.from(bars.querySelectorAll('.bar-fill')).forEach(function (fill, k) {
-      fill.style.height = heights[k] + '%';
+  function paint(el) {
+    var cols = Array.from(el.querySelectorAll('.bar-col'));
+    cols.forEach(function (col, i) {
+      var s = STAGES[i];
+      col.querySelector('.seg-cost').style.height =
+        (s.cost / MAX_TOTAL * 100) + '%';
+      col.querySelector('.seg-delay').style.height =
+        (s.delay / MAX_TOTAL * 100) + '%';
+      col.querySelector('.seg-redesign').style.height =
+        (s.redesign / MAX_TOTAL * 100) + '%';
     });
-
-    el.querySelector('.cost-head').style.color =
-      idx === 0 ? 'var(--neu)' : 'var(--loss)';
-    el.dataset.stop = String(idx);
   }
 
   return {
-    enter: function (el) {
-      if (el.dataset.wired !== '1') {
-        el.dataset.wired = '1';
-        el.querySelectorAll('.stop').forEach(function (b) {
-          b.addEventListener('click', function (e) {
-            e.stopPropagation();
-            apply(el, parseInt(b.getAttribute('data-s'), 10));
-          });
-        });
-      }
-      apply(el, DEFAULT_STOP);
-    },
-    beat: function (el, n) {
-      // Beat 4 is the argument: the same issue, found in design instead.
-      if (n >= 4) { if (el.dataset.stop !== '0') apply(el, 0); }
-      else if (el.dataset.stop !== String(DEFAULT_STOP)) apply(el, DEFAULT_STOP);
-    },
-    leave: function (el) { apply(el, DEFAULT_STOP); }
+    enter: function (el) { paint(el); }
   };
 })());
 </script>
