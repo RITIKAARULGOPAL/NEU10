@@ -1479,21 +1479,49 @@ html[data-dev] .slide[data-overflow="1"] {
 }
 #s07 .stop[data-s="0"].is-on span { color: var(--neu-bright); }
 
-/* ---- what it costs ---- */
+/* ---- what it costs: a real bar chart, not three thin slivers ----
+   The old horizontal bars were 7px tall, so at "during design" (4-6% fill)
+   the three metrics were 2-3px slivers — indistinguishable from each other.
+   A vertical chart with a shared baseline reads correctly at every stop,
+   including the best case, because the height scale (see STOP_HEIGHTS in
+   the script) keeps a visible floor and real gaps between categories. */
 #s07 .cost-head { color: var(--loss); transition: color .4s var(--ease); }
 #s07 .bars { display: flex; flex-direction: column; gap: var(--sp-2); }
-#s07 .bar { display: grid; grid-template-columns: 9.5em 1fr; gap: var(--sp-3); align-items: center; }
-#s07 .bar span { font-size: var(--t-small); color: var(--ink-2); }
-#s07 .bar i {
-  display: block; height: 7px; width: 100%;
-  background: var(--fill-subtle); border-radius: 4px; overflow: hidden;
+
+#s07 .bar-plot {
+  display: flex; align-items: flex-end;
+  gap: clamp(16px, 2.4vw, 32px);
+  height: clamp(96px, 15vh, 148px);
+  border-bottom: 1px solid var(--rule);
 }
-#s07 .bar em {
-  display: block; height: 100%; width: 100%;
-  background: var(--loss); border-radius: 4px;
-  transition: width .6s var(--ease-out), background .5s var(--ease);
+#s07 .bar-col {
+  flex: 1 1 0; height: 100%; min-width: 0;
+  display: flex; justify-content: center;
 }
-#s07 .bars.is-early em { background: var(--neu); }
+#s07 .bar-track {
+  width: clamp(26px, 3.6vw, 42px); height: 100%;
+  display: flex; align-items: flex-end;
+  background: var(--fill-subtle);
+  border-radius: 4px 4px 1px 1px;
+  overflow: hidden;
+}
+#s07 .bar-fill {
+  display: block; width: 100%; height: 0%;
+  background: var(--loss);
+  border-radius: 3px 3px 0 0;
+  transition: height .6s var(--ease-out), background .5s var(--ease);
+}
+#s07 .bars.is-early .bar-fill { background: var(--neu); }
+
+#s07 .bar-labels {
+  display: flex; gap: clamp(16px, 2.4vw, 32px);
+  padding-top: var(--sp-1);
+}
+#s07 .bar-labels span {
+  flex: 1 1 0; min-width: 0;
+  font-size: var(--t-small); color: var(--ink-2);
+  text-align: center; line-height: 1.25;
+}
 
 /* ==== 08-ai.html ==== */
 /* ---- Act IV video template (shared idiom with #s09 / #s10) ---- */
@@ -2560,10 +2588,16 @@ html[data-dev] .slide[data-overflow="1"] {
 
         <div class="stack" data-beat="3">
           <p class="mono cost-head">Every late discovery increases</p>
-          <div class="bars">
-            <div class="bar"><span>Cost</span><i><em></em></i></div>
-            <div class="bar"><span>Delays</span><i><em></em></i></div>
-            <div class="bar"><span>Redesign effort</span><i><em></em></i></div>
+          <div class="bars" role="img"
+               aria-label="Relative cost, delays and redesign effort, by when the issue was found">
+            <div class="bar-plot">
+              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
+              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
+              <div class="bar-col"><div class="bar-track"><i class="bar-fill"></i></div></div>
+            </div>
+            <div class="bar-labels">
+              <span>Cost</span><span>Delays</span><span>Redesign effort</span>
+            </div>
           </div>
           <p class="footnote">Relative, not measured &mdash; the later the same
             fix is found, the more of each it costs.</p>
@@ -4211,6 +4245,19 @@ Neu10.register('s06', (function () {
 Neu10.register('s07', (function () {
   var DEFAULT_STOP = 3;   // status quo: found during execution
 
+  /* Illustrative, not measured — the footnote says so and this is why: a
+     single multiplier against the track's 6/40/70/100 collapsed all three
+     bars into indistinguishable slivers at "during design". Each stop gets
+     its own hand-set [Cost, Delays, Redesign effort] so the order (Cost
+     always tallest) holds and every stop keeps a real, visible gap between
+     the three, including the best case. */
+  var STOP_HEIGHTS = [
+    [16, 12, 9],    // during design
+    [46, 36, 27],   // during contractor discussions
+    [72, 58, 45],   // during site coordination
+    [100, 82, 64]   // during execution
+  ];
+
   function apply(el, idx) {
     var stops = Array.from(el.querySelectorAll('.stop'));
     var target = stops[idx];
@@ -4221,10 +4268,9 @@ Neu10.register('s07', (function () {
 
     var bars = el.querySelector('.bars');
     bars.classList.toggle('is-early', idx === 0);
-    // Cost, delays and redesign effort each scale with how late it was found.
-    var factors = [1, 0.88, 0.74];
-    Array.from(bars.querySelectorAll('em')).forEach(function (fill, k) {
-      fill.style.width = Math.max(4, Math.round(w * factors[k])) + '%';
+    var heights = STOP_HEIGHTS[idx];
+    Array.from(bars.querySelectorAll('.bar-fill')).forEach(function (fill, k) {
+      fill.style.height = heights[k] + '%';
     });
 
     el.querySelector('.cost-head').style.color =
