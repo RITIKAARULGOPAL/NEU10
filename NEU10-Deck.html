@@ -1462,9 +1462,14 @@ html[data-dev] .slide[data-overflow="1"] {
   border-radius: 4px 4px 1px 1px;
   overflow: hidden;
 }
+/* Column i, segment j rises at (i * COL_STEP + j * SEG_STEP) — left to right,
+   bottom to top within each bar. --ci is set on .bar-col and inherited down;
+   --si is set on each segment directly. */
 #s07 .seg {
   display: block; width: 100%; height: 0%;
-  transition: height .6s var(--ease-out), background .5s var(--ease);
+  transition: height .6s var(--ease-out)
+                calc(var(--ci, 0) * 220ms + var(--si, 0) * 90ms),
+              background .5s var(--ease);
 }
 /* Default (the three problem stages): orange, darkest at the base. */
 #s07 .seg-cost     { background: var(--loss); }
@@ -1474,6 +1479,22 @@ html[data-dev] .slide[data-overflow="1"] {
 #s07 .bar-track.is-good .seg-cost     { background: var(--neu); }
 #s07 .bar-track.is-good .seg-delay    { background: var(--neu-bright); }
 #s07 .bar-track.is-good .seg-redesign { background: var(--neu-pale); }
+
+/* The execution bar pulses once it has finished rising (the full stagger
+   above tops out at 3*220 + 2*90 = 840ms, plus its own .6s rise — 1.5s clears
+   that with room to spare) so the glow reads as a steady warning, not part
+   of the entrance. Existing rgba tokens only, no new colour introduced. */
+@keyframes s07-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--loss-dim); }
+  50%      { box-shadow: 0 0 16px 4px var(--loss-line); }
+}
+#s07 .bar-track.is-danger {
+  animation: s07-pulse 2.4s var(--ease) 1.5s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  #s07 .seg { transition: none !important; }
+  #s07 .bar-track.is-danger { animation: none !important; }
+}
 
 #s07 .bar-labels {
   display: flex; gap: clamp(10px, 1.6vw, 22px);
@@ -2535,7 +2556,7 @@ html[data-dev] .slide[data-overflow="1"] {
 
 <!-- ==== 07-clashes.html ==== -->
 <section class="slide" id="s07" data-act="III"
-         data-title="Design issues should be solved before construction begins"
+         data-title="Resolve conflicts before they become construction problems"
          data-dwell="4600">
   <div class="slide-inner is-wide">
     <div class="split">
@@ -2543,16 +2564,16 @@ html[data-dev] .slide[data-overflow="1"] {
       <div class="stack-lg">
         <div class="stack">
           <p class="eyebrow eyebrow--neu">Act III &middot; The shift</p>
-          <h1 class="h1" style="max-width:24ch">Design issues should be solved
-            before construction begins</h1>
+          <h1 class="h1" style="max-width:26ch">Resolve conflicts before they
+            become construction problems.</h1>
         </div>
 
-        <p class="thesis">Resolving issues / clashes during design process
-          and not execution.</p>
+        <p class="thesis">Identify and resolve clashes during design&mdash;not
+          during construction.</p>
 
-        <p class="lede" data-beat="4" style="max-width:38ch">
-          Neu10 moves those conversations into
-          <span class="hi-neu">the design stage.</span>
+        <p class="lede" data-beat="4" style="max-width:44ch">
+          Neu10 brings coordination forward, where decisions are
+          <span class="hi-neu">faster, cheaper, and easier to implement.</span>
         </p>
 
         <div class="road" data-beat="5">
@@ -2560,15 +2581,15 @@ html[data-dev] .slide[data-overflow="1"] {
             <span class="mono">Future roadmap includes</span>
             <span class="tag tag--planned">Planned</span>
           </div>
-          <p class="small" style="max-width:52ch">Automated clash detection that
-            identifies conflicts before execution begins&mdash;reducing costly
-            on-site changes and rework.</p>
+          <p class="small" style="max-width:52ch">Automated clash detection
+            identifies conflicts before construction begins&mdash;reducing
+            delays, rework, and costly site changes.</p>
         </div>
       </div>
 
       <div class="stack-lg">
         <div class="stack" data-beat="2">
-          <p class="mono">Today many coordination issues are only discovered</p>
+          <p class="mono">Most coordination issues are still discovered too late.</p>
         </div>
 
         <!-- All four stages shown together, not one at a time: cost, delays
@@ -2582,40 +2603,46 @@ html[data-dev] .slide[data-overflow="1"] {
              design stage" line on the left, now naming what's already on
              screen rather than triggering it. -->
         <div class="stack" data-beat="3">
-          <p class="mono cost-head">Every late discovery increases</p>
+          <p class="mono cost-head">Every delayed discovery compounds the cost.</p>
 
           <div class="bars" role="img"
                aria-label="Cost, delays and redesign effort combined, by when the
                issue is found — smallest during design, rising through during
                contractor discussions and during site coordination, largest
                during execution">
+            <!-- --ci staggers column-to-column (left to right); --si staggers
+                 segment-to-segment within a column (Cost, then Delays, then
+                 Redesign effort). Both feed one transition-delay formula on
+                 .seg in the stylesheet below. -->
             <div class="bar-plot">
-              <div class="bar-col">
+              <div class="bar-col" style="--ci:0">
                 <div class="bar-track is-good">
-                  <i class="seg seg-cost"></i>
-                  <i class="seg seg-delay"></i>
-                  <i class="seg seg-redesign"></i>
+                  <i class="seg seg-cost" style="--si:0"></i>
+                  <i class="seg seg-delay" style="--si:1"></i>
+                  <i class="seg seg-redesign" style="--si:2"></i>
                 </div>
               </div>
-              <div class="bar-col">
+              <div class="bar-col" style="--ci:1">
                 <div class="bar-track">
-                  <i class="seg seg-cost"></i>
-                  <i class="seg seg-delay"></i>
-                  <i class="seg seg-redesign"></i>
+                  <i class="seg seg-cost" style="--si:0"></i>
+                  <i class="seg seg-delay" style="--si:1"></i>
+                  <i class="seg seg-redesign" style="--si:2"></i>
                 </div>
               </div>
-              <div class="bar-col">
+              <div class="bar-col" style="--ci:2">
                 <div class="bar-track">
-                  <i class="seg seg-cost"></i>
-                  <i class="seg seg-delay"></i>
-                  <i class="seg seg-redesign"></i>
+                  <i class="seg seg-cost" style="--si:0"></i>
+                  <i class="seg seg-delay" style="--si:1"></i>
+                  <i class="seg seg-redesign" style="--si:2"></i>
                 </div>
               </div>
-              <div class="bar-col">
-                <div class="bar-track">
-                  <i class="seg seg-cost"></i>
-                  <i class="seg seg-delay"></i>
-                  <i class="seg seg-redesign"></i>
+              <div class="bar-col" style="--ci:3">
+                <!-- The worst case: pulses gently once it has finished rising,
+                     to read as the one to avoid rather than just the tallest. -->
+                <div class="bar-track is-danger">
+                  <i class="seg seg-cost" style="--si:0"></i>
+                  <i class="seg seg-delay" style="--si:1"></i>
+                  <i class="seg seg-redesign" style="--si:2"></i>
                 </div>
               </div>
             </div>
@@ -4297,14 +4324,28 @@ Neu10.register('s07', (function () {
 
   function paint(el) {
     var cols = Array.from(el.querySelectorAll('.bar-col'));
-    cols.forEach(function (col, i) {
-      var s = STAGES[i];
-      col.querySelector('.seg-cost').style.height =
-        (s.cost / MAX_TOTAL * 100) + '%';
-      col.querySelector('.seg-delay').style.height =
-        (s.delay / MAX_TOTAL * 100) + '%';
-      col.querySelector('.seg-redesign').style.height =
-        (s.redesign / MAX_TOTAL * 100) + '%';
+    el.querySelectorAll('.seg').forEach(function (seg) { seg.style.height = '0%'; });
+
+    /* A synchronous reflow (offsetWidth) is not enough here: this whole slide
+       is ALSO going from hidden to visible in the same tick (goto() flips
+       .is-active right before calling enter()), so no real paint happens
+       between "set to 0%" and "set to target" — the browser coalesces both
+       into one frame and the rise never renders, regardless of the delay.
+       Waiting two animation frames guarantees a genuine painted 0% frame
+       exists before the target is applied, which is what a transition needs
+       to have something to animate from. */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        cols.forEach(function (col, i) {
+          var s = STAGES[i];
+          col.querySelector('.seg-cost').style.height =
+            (s.cost / MAX_TOTAL * 100) + '%';
+          col.querySelector('.seg-delay').style.height =
+            (s.delay / MAX_TOTAL * 100) + '%';
+          col.querySelector('.seg-redesign').style.height =
+            (s.redesign / MAX_TOTAL * 100) + '%';
+        });
+      });
     });
   }
 
