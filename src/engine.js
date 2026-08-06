@@ -116,11 +116,25 @@ const Neu10 = (function () {
     buildOverview();
     bindEvents();
     bindCompactNav();
+    wireVideoFullscreen();
     state.booted = true;
 
     // Deep link: #7  |  #7.4 (slide 7, beat 4)  |  #s07  |  #s07.4
     // The .beat form is what lets a slide be captured fully revealed.
-    const h = (location.hash || '').replace('#', '');
+    const initial = parseHash(location.hash);
+    goto(initial.start, initial.startBeat, true);
+
+    // Editing the hash after load (address bar, a same-page <a href="#13">,
+    // or another tab's fresh navigation) must jump live too — goto() itself
+    // only uses replaceState, which never fires hashchange, so this can't loop.
+    window.addEventListener('hashchange', function () {
+      const target = parseHash(location.hash);
+      goto(target.start, target.startBeat);
+    });
+  }
+
+  function parseHash(rawHash) {
+    const h = (rawHash || '').replace('#', '');
     let start = 0, startBeat = 1;
     if (h) {
       const parts = h.split('.');
@@ -131,7 +145,7 @@ const Neu10 = (function () {
       if (parts[1] === 'end' || parts[1] === 'max') startBeat = state.slides[start].beats;
       else if (/^\d+$/.test(parts[1] || '')) startBeat = parseInt(parts[1], 10);
     }
-    goto(start, startBeat, true);
+    return { start: start, startBeat: startBeat };
   }
 
   function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
@@ -336,6 +350,90 @@ const Neu10 = (function () {
   function holdPlay()    { state.playHold++; clearTimeout(state.playTimer); }
   function releasePlay() { state.playHold = Math.max(0, state.playHold - 1); schedulePlay(); }
 
+  /* ---------- video fullscreen ---------- */
+  /* Injected rather than authored into each slide: every .video-frame holding
+     a video gets the same control, and a new video slide inherits it for
+     free. The slides own playback for their beats; this only takes over when
+     someone asks to watch a clip properly. */
+  function wireVideoFullscreen() {
+    document.querySelectorAll('.video-frame').forEach(function (frame) {
+      const v = frame.querySelector('video');
+      if (!v || frame.querySelector('.vfs')) return;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'vfs';
+      btn.setAttribute('data-no-advance', '');
+      btn.setAttribute('aria-label', 'Play this video fullscreen');
+      btn.title = 'Fullscreen';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<path d="M9 3H3v6M15 3h6v6M15 21h6v-6M9 21H3v-6"' +
+        ' stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+      btn.addEventListener('click', function (e) {
+        /* A click anywhere on a slide advances the deck; this one must not. */
+        e.preventDefault();
+        e.stopPropagation();
+        enterFullscreen(v);
+      });
+
+      /* iOS drives its own player and never fires fullscreenchange, so the
+         hold is balanced off the video's own pair of events instead. */
+      v.addEventListener('webkitbeginfullscreen', function () { armFullscreen(v); });
+      v.addEventListener('webkitendfullscreen',   function () { releaseFullscreen(v); });
+
+      frame.appendChild(btn);
+    });
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+  }
+
+  function fullscreenEl() {
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  /* Ask, and change nothing yet. A fullscreen request can be refused — by
+     policy, by a missing user gesture, by an embedding frame — and some
+     refusals neither throw nor reject. Arming the video up front would then
+     strand it with native controls showing and an autoplay hold that is
+     never released, so every state change waits for the event that proves
+     we actually got there. */
+  function enterFullscreen(v) {
+    const req = v.requestFullscreen || v.webkitRequestFullscreen ||
+                v.webkitEnterFullscreen;
+    if (!req) return;
+    try {
+      const p = req.call(v);
+      if (p && p.catch) p.catch(function () {});
+    } catch (e) { /* refused — nothing was touched */ }
+  }
+
+  function armFullscreen(v) {
+    /* Native controls only exist in here; the framed video is chrome-free. */
+    v.controls = true;
+    /* Autoplay must not advance the deck out from under someone watching. */
+    if (v.dataset.fsHeld !== '1') { v.dataset.fsHeld = '1'; holdPlay(); }
+    /* Clicking "fullscreen" on a finished clip should replay it, not open on
+       a frozen last frame. */
+    if (v.ended) { try { v.currentTime = 0; } catch (e) {} }
+    const play = v.play();
+    if (play && play.catch) play.catch(function () {});
+  }
+
+  function releaseFullscreen(v) {
+    v.controls = false;
+    /* holdPlay / releasePlay must stay balanced, or autoplay deadlocks. */
+    if (v.dataset.fsHeld === '1') { v.dataset.fsHeld = '0'; releasePlay(); }
+  }
+
+  function onFullscreenChange() {
+    const fs = fullscreenEl();
+    if (fs && fs.tagName === 'VIDEO') { armFullscreen(fs); return; }
+    /* Left fullscreen, or something else took it: hand back whatever we armed. */
+    document.querySelectorAll('video[data-fs-held="1"]').forEach(releaseFullscreen);
+  }
+
   /* ---------- overview ---------- */
   function openOverview()  { state.overview = true;  document.getElementById('overview').classList.add('is-open'); }
   function closeOverview() { state.overview = false; document.getElementById('overview').classList.remove('is-open'); }
@@ -366,6 +464,17 @@ const Neu10 = (function () {
 
     document.addEventListener('keydown', function (e) {
       const k = e.key;
+
+      /* While a video is fullscreen the keyboard belongs to the player, not
+         the deck: arrows would advance slides behind it, and Esc — the way
+         out of fullscreen — would also throw the overview open. */
+      if (fullscreenEl()) return;
+
+      /* A focused control keeps its own keys. Enter and Space are "advance"
+         for the deck, but they are also how a keyboard reaches a button —
+         swallowing them here would make the video control unusable. */
+      if ((k === 'Enter' || k === ' ') && e.target && e.target.closest &&
+          e.target.closest('a, button, input, select, textarea')) return;
       if (k === 'Escape') { e.preventDefault(); toggleOverview(); return; }
       if (state.overview && k !== 'Escape') { closeOverview(); }
 
