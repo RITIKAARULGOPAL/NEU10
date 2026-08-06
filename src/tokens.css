@@ -284,6 +284,53 @@ body::after {
 .tag--planned::before { background: none; border: 1px solid currentColor; }
 
 /* ============================================================
+   MARKS — yes / no / partial / coming, for comparison rows.
+   Drawn rather than ✓ ✗ glyphs so they can never degrade to a
+   tofu box in a font that lacks them. State is always backed by
+   adjacent text, so it never rests on colour alone.
+   ============================================================ */
+
+.mark {
+  flex: 0 0 auto;
+  width: 1em; height: 1em;
+  display: inline-block; position: relative;
+}
+.mark::before, .mark::after { content: ""; position: absolute; background: currentColor; }
+
+.mark--no { color: var(--ink-4); }
+.mark--no::before, .mark--no::after {
+  left: 6%; top: 46%; width: 88%; height: 1.6px; border-radius: 2px;
+}
+.mark--no::before { transform: rotate(45deg); }
+.mark--no::after  { transform: rotate(-45deg); }
+
+.mark--yes { color: var(--neu); }
+.mark--yes::before {
+  left: 8%; top: 52%; width: 38%; height: 1.8px; border-radius: 2px;
+  transform: rotate(45deg); transform-origin: left center;
+}
+.mark--yes::after {
+  left: 34%; top: 74%; width: 66%; height: 1.8px; border-radius: 2px;
+  transform: rotate(-52deg); transform-origin: left center;
+}
+
+/* Works, but not properly — a single bar, deliberately weaker than a tick. */
+.mark--part { color: var(--warn); }
+.mark--part::before {
+  left: 12%; top: 46%; width: 76%; height: 1.8px; border-radius: 2px;
+}
+.mark--part::after { display: none; }
+
+/* Coming, not here yet — echoes the hollow dot on .tag--building/planned. */
+.mark--soon {
+  color: var(--warn);
+  width: .72em; height: .72em;
+  border: 1.5px dashed currentColor; border-radius: 50%;
+  align-self: center;
+}
+.mark--soon::before, .mark--soon::after { display: none; }
+
+/* ============================================================
    LAYOUT HELPERS
    ============================================================ */
 

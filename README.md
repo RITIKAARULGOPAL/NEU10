@@ -31,7 +31,7 @@ replace one, overwrite it keeping the same filename. No rebuild needed.
 
 ## Structure
 
-Five acts, fourteen screens.
+Five acts, sixteen screens.
 
 - **I — The bottleneck.** The cycle every office project runs, and the fact that
   one change gets paid for six times.
@@ -40,7 +40,8 @@ Five acts, fourteen screens.
 - **III — The shift.** One change updates every output. The model knows what
   things are. Clashes resolved in design, not execution.
 - **IV — Built for interiors.** AI harness, point cloud, documentation and
-  costing, adoption barriers.
+  costing, then the two adoption barriers as their own screens — the learning
+  curve and cross-platform support.
 - **V — The case.** Business impact, roadmap, close.
 
 ## On a phone

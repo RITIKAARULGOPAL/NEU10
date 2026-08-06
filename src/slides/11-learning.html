@@ -1,0 +1,187 @@
+<section class="slide" id="s11" data-act="IV"
+         data-title="Very low learning curve" data-dwell="5000">
+  <div class="slide-inner is-wide">
+
+    <div class="stack">
+      <p class="eyebrow eyebrow--neu">Act IV &middot; Built for interiors</p>
+      <div class="head-row">
+        <h1 class="h1">Very low learning curve</h1>
+        <span class="tag tag--live">Live</span>
+      </div>
+      <p class="lede">Live today &mdash; and the reason isn&rsquo;t only
+        interface design.</p>
+    </div>
+
+    <!-- The whole argument as one picture: a general modelling system makes you
+         learn the entire surface to use the fraction that applies to interiors.
+         Cells, not prose — the size difference between the two blocks IS the
+         claim, so there is nothing to read to get it. The 20% figure is the
+         one the deck already uses in conversation; the footnote keeps it
+         honest as illustrative rather than measured. -->
+    <div class="coverage">
+
+      <div class="cv" data-beat="2">
+        <p class="cv-lab">General-purpose BIM <em>e.g. Revit</em></p>
+        <div class="cv-grid cv-grid--all" aria-hidden="true"></div>
+        <p class="cv-cap">Learn all of it.
+          <span class="cv-strong">~20% applies to interiors.</span></p>
+      </div>
+
+      <div class="cv cv--neu" data-beat="3">
+        <p class="cv-lab cv-lab--neu">NEU10 <em>built for office interiors</em></p>
+        <div class="cv-grid cv-grid--neu" aria-hidden="true"></div>
+        <p class="cv-cap">Learn this much.
+          <span class="cv-strong cv-strong--neu">All of it applies.</span></p>
+      </div>
+
+    </div>
+
+    <!-- What that removes, as three labels rather than three paragraphs. -->
+    <div class="gone" data-beat="4">
+      <span class="gone-item"><i class="mark mark--no" aria-hidden="true"></i>
+        Scripting to learn</span>
+      <span class="gone-item"><i class="mark mark--no" aria-hidden="true"></i>
+        Families to build</span>
+      <span class="gone-item"><i class="mark mark--no" aria-hidden="true"></i>
+        Irrelevant workflows</span>
+    </div>
+
+    <p class="footnote" data-beat="4">Proportions illustrative, not measured.</p>
+
+  </div>
+</section>
+
+<style>
+#s11 .head-row {
+  display: flex; align-items: center; gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+/* Auto-width, not two equal columns: the blocks are only as wide as their
+   own cells, so they sit next to each other and the size difference reads
+   immediately. Equal columns pushed them to opposite ends of the slide with
+   dead space between, which is exactly the comparison being lost. */
+#s11 .coverage {
+  display: flex; align-items: flex-end;
+  gap: clamp(36px, 5.5vw, 104px);
+  flex-wrap: wrap;
+}
+#s11 .cv { display: flex; flex-direction: column; gap: var(--sp-3); min-width: 0; }
+
+#s11 .cv-lab {
+  display: flex; align-items: baseline; gap: .7em; flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--rule);
+}
+#s11 .cv-lab em {
+  font-family: var(--font-text); font-style: normal;
+  font-size: var(--t-small); letter-spacing: 0; text-transform: none;
+  color: var(--ink-4);
+}
+#s11 .cv-lab--neu { color: var(--neu-bright); border-bottom-color: var(--neu-line); }
+#s11 .cv-lab--neu em { color: var(--neu); }
+
+/* Both grids use the same FIXED cell size, so the two blocks are directly
+   comparable by area — that comparison is the point of the slide. The cell
+   must not be sized off the column (1fr), or a 10x10 grid becomes 600px tall
+   and the slide overflows; --cell is the single knob for the whole picture. */
+#s11 .cv-grid {
+  --cell: clamp(9px, 1.05vw, 15px);
+  display: grid;
+  grid-template-columns: repeat(10, var(--cell));
+  gap: clamp(2px, .3vw, 4px);
+  justify-content: start;
+}
+#s11 .cell {
+  width: var(--cell); height: var(--cell);
+  border-radius: 1px;
+  background: var(--fill-subtle);
+  border: 1px solid var(--rule);
+}
+/* Lit cells are solid, not tinted. The whole read is "only these squares
+   matter" — at this cell size a .13-alpha fill is too faint to count, and
+   the point dies with it. */
+#s11 .cell.is-on {
+  background: var(--loss);
+  border-color: var(--loss);
+}
+#s11 .cv-grid--neu .cell {
+  background: var(--neu);
+  border-color: var(--neu);
+}
+
+#s11 .cv-cap {
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+#s11 .cv-strong { display: block; color: var(--ink); font-weight: 600; }
+#s11 .cv-strong--neu { color: var(--neu-bright); }
+
+#s11 .gone {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: var(--sp-3) clamp(20px, 2.6vw, 44px);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--rule);
+}
+#s11 .gone-item {
+  display: inline-flex; align-items: center; gap: .6em;
+  font-family: var(--font-display);
+  font-size: var(--t-h3); font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--ink-2);
+}
+
+@media (max-height: 700px) {
+  #s11 .coverage { gap: clamp(20px, 2.6vw, 44px); }
+  #s11 .cv-grid { --cell: clamp(8px, .8vw, 11px); gap: 2px; }
+  #s11 .cv-cap { font-size: var(--t-small); }
+  #s11 .gone-item { font-size: var(--t-body); }
+  #s11 .gone { padding-top: var(--sp-2); gap: var(--sp-2) clamp(16px, 2vw, 32px); }
+  #s11 .cv { gap: var(--sp-2); }
+}
+
+/* Stacked, two 10-wide grids one under the other read as one long block, so
+   the size comparison — the whole point — is lost. Sitting them side by side
+   at half width keeps it, and the cells stay legible because they scale. */
+@media (max-width: 820px) {
+  #s11 .coverage { gap: var(--sp-4); }
+  #s11 .cv-grid { --cell: clamp(7px, 2.2vw, 12px); gap: 2px; }
+  #s11 .gone { gap: var(--sp-2) var(--sp-4); }
+  #s11 .gone-item { font-size: var(--t-body); }
+}
+</style>
+
+<script>
+Neu10.register('s11', (function () {
+  /* 100 cells for the general system, 20 for Neu10 — the same cell size in
+     both, so area carries the comparison. Built here rather than as 120 divs
+     of markup: the fragment stays readable and the pattern stays in one
+     place. Indices are a fixed list, not random, so the picture is identical
+     every run (and in any screenshot of it). */
+  var RELEVANT = [3, 7, 11, 18, 22, 26, 31, 37, 44, 48,
+                  52, 59, 63, 68, 71, 77, 82, 86, 91, 97];
+
+  function fill(grid, n, onSet) {
+    if (grid.childElementCount) return;   // idempotent: enter() can re-run
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var c = document.createElement('i');
+      c.className = 'cell' + (onSet && onSet.indexOf(i) >= 0 ? ' is-on' : '');
+      frag.appendChild(c);
+    }
+    grid.appendChild(frag);
+  }
+
+  return {
+    enter: function (el) {
+      fill(el.querySelector('.cv-grid--all'), 100, RELEVANT);
+      fill(el.querySelector('.cv-grid--neu'), 20, null);
+    }
+  };
+})());
+</script>
