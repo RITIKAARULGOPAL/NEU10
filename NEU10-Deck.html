@@ -1424,31 +1424,60 @@ html[data-dev] .slide[data-overflow="1"] {
 }
 
 /* ==== 07-clashes.html ==== */
-/* White card for this slide only — redefine the tokens the rest of #s07's
-   markup already reads (ink scale, rule, fill-subtle) so every existing
-   component goes dark-on-white automatically instead of hand-patching each
-   selector. --loss-ink is local-only: the stock --loss orange is a shape
-   colour tuned for the black deck and reads too light as small text on
-   white, so cost-head gets its own darker tier. */
-#s07 {
+/* ---- LIGHT MODE ----
+   This slide inverts the whole deck to white, chrome included, rather than
+   floating a white card on the dark ground. The engine adds .is-light to
+   <html> while s07 is active (see the script below), so the token overrides
+   land at document level and every element — slide content AND the fixed
+   chrome — recolours from the same place.
+
+   The ink scale is redefined rather than each selector patched: the deck's
+   components all read var(--ink*), so flipping the four values inverts them
+   in one move. The accent families keep their hues but drop to darker,
+   higher-contrast tiers, because --neu-bright / --loss-* are tuned for a
+   near-black ground and wash out badly on white. */
+html.is-light {
   --ink:         #15161B;
   --ink-2:       #454B58;
-  --ink-3:       #676E7C;
-  --ink-4:       #9096A3;
-  --rule:        rgba(20,22,28,.12);
-  --rule-strong: rgba(20,22,28,.22);
+  --ink-3:       #5E6674;
+  --ink-4:       #767D8B;
+  --rule:        rgba(20,22,28,.14);
+  --rule-strong: rgba(20,22,28,.24);
   --fill-subtle: rgba(20,22,28,.06);
+  /* Readable-on-white tiers of the same two hues. --neu-bright in particular
+     is a pale sky blue that is nearly invisible as text here. */
+  --neu-ink:     #2C5CC5;
   --loss-ink:    #B03E22;
 }
-#s07 .slide-inner {
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: clamp(28px, 4vh, 48px) clamp(32px, 4vw, 64px);
+html.is-light body { background: #FFFFFF; color: var(--ink); }
+/* The dark deck's vignette and film grain both assume a black ground — the
+   grain reads as dirt on white and the glows as smudges. */
+html.is-light body::before,
+html.is-light body::after { display: none; }
+
+/* Chrome. The wordmark carries `--brand: var(--brand-lift)` because the true
+   brand violet is unreadable on black; on white that inversion is exactly
+   wrong, so hand it back the real #361674 — the dark logo is the same SVG,
+   just with its own brand colour restored. */
+html.is-light .wordmark { color: var(--ink); --brand: #361674; }
+html.is-light #counter b { color: var(--ink); }
+html.is-light .beat-dot { background: rgba(20,22,28,.22); }
+html.is-light .beat-dot.is-on { background: var(--neu-ink); }
+html.is-light #progress {
+  background: linear-gradient(90deg, var(--neu-ink), #6B9BFF);
 }
-/* .h1 has no color rule of its own in tokens.css — it just inherits body's
-   white, which the --ink override above can't reach since inheritance
-   carries the already-resolved colour, not a live var() reference. */
-#s07 .h1 { color: var(--ink); }
+html.is-light #click-hint kbd { border-color: var(--rule-strong); }
+html.is-light .act-item.is-current { color: var(--ink); }
+html.is-light #play-flag { color: var(--neu-ink); }
+/* Compact docks the footer on an opaque strip painted with --bg. */
+html.is-light #footer-bar { background: #FFFFFF; }
+html.is-light #m-nav { background: linear-gradient(180deg, transparent, #FFF 45%); }
+
+/* .h1 and .eyebrow--neu have no live var() left to override: .h1 simply
+   inherits body's colour (inheritance passes the already-resolved value, not
+   the var reference) and .eyebrow--neu is pinned to the dark-ground blue. */
+html.is-light #s07 .h1 { color: var(--ink); }
+html.is-light #s07 .eyebrow--neu { color: var(--neu-ink); }
 
 #s07 .thesis {
   font-family: var(--font-display);
@@ -1459,8 +1488,8 @@ html[data-dev] .slide[data-overflow="1"] {
   padding: .1em 0 .1em var(--sp-4);
   max-width: 34ch;
 }
-
-#s07 .road { display: flex; flex-direction: column; gap: var(--sp-2); }
+html.is-light #s07 .thesis { color: var(--neu-ink); border-left-color: var(--neu-ink); }
+html.is-light #s07 .hi-neu { color: var(--neu-ink); }
 
 /* ---- the combined escalation chart ----
    One stacked bar per stage (Cost bottom / Delays / Redesign effort top),
@@ -1505,6 +1534,16 @@ html[data-dev] .slide[data-overflow="1"] {
 #s07 .bar-track.is-good .seg-cost     { background: var(--neu); }
 #s07 .bar-track.is-good .seg-delay    { background: var(--neu-bright); }
 #s07 .bar-track.is-good .seg-redesign { background: var(--neu-pale); }
+/* The *-pale top tiers are near-white by design (they sit on black), so on a
+   white ground the Redesign-effort segment all but disappears and each bar
+   looks shorter than it is. Shift all three tiers darker, keeping the same
+   dark-at-the-base ordering the legend describes. */
+html.is-light #s07 .seg-cost     { background: #A63A1E; }
+html.is-light #s07 .seg-delay    { background: #E4633C; }
+html.is-light #s07 .seg-redesign { background: #F5A184; }
+html.is-light #s07 .bar-track.is-good .seg-cost     { background: #2C5CC5; }
+html.is-light #s07 .bar-track.is-good .seg-delay    { background: #6B9BFF; }
+html.is-light #s07 .bar-track.is-good .seg-redesign { background: #A9C5FF; }
 
 /* The execution bar pulses once it has finished rising (the full stagger
    above tops out at 3*220 + 2*90 = 840ms, plus its own .6s rise — 1.5s clears
@@ -1534,6 +1573,7 @@ html[data-dev] .slide[data-overflow="1"] {
   text-align: center;
 }
 #s07 .bar-labels span:first-child { color: var(--neu-bright); }
+html.is-light #s07 .bar-labels span:first-child { color: var(--neu-ink); }
 
 /* Hue-agnostic legend: shade intensity (not colour) is what it explains, so
    it reads the same for the three orange stages and the one blue stage. */
@@ -2601,16 +2641,6 @@ html[data-dev] .slide[data-overflow="1"] {
           Neu10 brings coordination forward, where decisions are
           <span class="hi-neu">faster, cheaper, and easier to implement.</span>
         </p>
-
-        <div class="road" data-beat="5">
-          <div class="row">
-            <span class="mono">Future roadmap includes</span>
-            <span class="tag tag--planned">Planned</span>
-          </div>
-          <p class="small" style="max-width:52ch">Automated clash detection
-            identifies conflicts before construction begins&mdash;reducing
-            delays, rework, and costly site changes.</p>
-        </div>
       </div>
 
       <div class="stack-lg">
@@ -4375,8 +4405,18 @@ Neu10.register('s07', (function () {
     });
   }
 
+  /* The white ground has to cover the fixed chrome too, which lives outside
+     this section — so the flag goes on <html> and comes off on leave. Set on
+     the root rather than <body> because tokens.css declares the token scale
+     at :root and body's own colour resolves from it. */
   return {
-    enter: function (el) { paint(el); }
+    enter: function (el) {
+      document.documentElement.classList.add('is-light');
+      paint(el);
+    },
+    leave: function () {
+      document.documentElement.classList.remove('is-light');
+    }
   };
 })());
 
