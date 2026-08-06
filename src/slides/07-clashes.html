@@ -38,11 +38,13 @@
         <!-- All four stages shown together, not one at a time: cost, delays
              and redesign effort stack into a single combined bar per stage,
              so the escalation is visible in one glance instead of requiring
-             a click through four separate single-stage views. Beat 3 shows
-             the problem escalating (contractor -> site -> execution); beat 4
-             reveals the design-stage bar, small and blue, as the resolution
-             — timed with the "Neu10 moves those conversations into the
-             design stage" line on the left. -->
+             a click through four separate single-stage views. All four
+             appear together on the same click (beat 3) — the design-stage
+             bar, small and blue, is the resolution sitting right there next
+             to the problem it resolves, not a separate reveal a click later.
+             Beat 4 still lands the "Neu10 moves those conversations into the
+             design stage" line on the left, now naming what's already on
+             screen rather than triggering it. -->
         <div class="stack" data-beat="3">
           <p class="mono cost-head">Every late discovery increases</p>
 
@@ -52,7 +54,7 @@
                contractor discussions and during site coordination, largest
                during execution">
             <div class="bar-plot">
-              <div class="bar-col" data-beat="4">
+              <div class="bar-col">
                 <div class="bar-track is-good">
                   <i class="seg seg-cost"></i>
                   <i class="seg seg-delay"></i>
@@ -83,7 +85,7 @@
             </div>
 
             <div class="bar-labels">
-              <span data-beat="4">during design</span>
+              <span>during design</span>
               <span>during contractor discussions</span>
               <span>during site coordination</span>
               <span>during execution</span>
