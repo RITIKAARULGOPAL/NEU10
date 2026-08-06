@@ -17,13 +17,15 @@
       <p class="oc" style="--i:4"><em>Lower</em> dependency on BIM specialists</p>
     </div>
 
-    <!-- BEATS 3-4 — only then, the numbers, two at a time, with the observed
-         figure landing last and marked apart from the three estimates.
+    <!-- BEATS 3-6 — then the numbers, one per click, so each figure gets the
+         room to land on its own. The observed one arrives last, marked apart
+         from the three estimates by the filled provenance dot and the deeper
+         numeral rather than by a rule.
+
          Captions are the metric itself, not a sentence about it: the reasoning
          behind each range (which gain rolls up into which, what the licence
          comparison is against) is the spoken part, not the read part. -->
     <div class="nums">
-      <hr class="rule-h" data-beat="3">
       <div class="grid-4">
 
         <div class="stat m m--est" data-beat="3">
@@ -35,30 +37,30 @@
           <p class="stat-cap">less design-to-CD time</p>
         </div>
 
-        <div class="stat m m--est" data-beat="3">
+        <div class="stat m m--est" data-beat="4">
           <div class="m-head">
             <span class="stat-key">COST</span>
             <span class="prov prov--est">ESTIMATE</span>
           </div>
-          <p class="stat-num stat-num--sm"><span class="cu" data-to="20" data-at="3">20</span>-40%</p>
+          <p class="stat-num stat-num--sm"><span class="cu" data-to="20" data-at="4">20</span>-40%</p>
           <p class="stat-cap">lower licence &amp; infrastructure</p>
         </div>
 
-        <div class="stat m m--est" data-beat="4">
+        <div class="stat m m--est" data-beat="5">
           <div class="m-head">
             <span class="stat-key">RESOURCES</span>
             <span class="prov prov--est">ESTIMATE</span>
           </div>
-          <p class="stat-num stat-num--sm"><span class="cu" data-to="60" data-at="4">60</span>-70%</p>
+          <p class="stat-num stat-num--sm"><span class="cu" data-to="60" data-at="5">60</span>-70%</p>
           <p class="stat-cap">fewer specialist hires</p>
         </div>
 
-        <div class="stat m m--obs" data-beat="4">
+        <div class="stat m m--obs" data-beat="6">
           <div class="m-head">
             <span class="stat-key">EFFICIENCY</span>
             <span class="prov prov--obs">OBSERVED</span>
           </div>
-          <p class="stat-num stat-num--sm"><span class="cu" data-to="90" data-at="4">90</span>%</p>
+          <p class="stat-num stat-num--sm"><span class="cu" data-to="90" data-at="6">90</span>%</p>
           <p class="stat-cap">faster library build</p>
         </div>
 
@@ -66,7 +68,8 @@
     </div>
 
     <!-- Shortened, not dropped: the deck never shows a figure without saying
-         where it came from. -->
+         where it came from. Arrives with the first figure, not after the last,
+         so no number is ever on screen unqualified. -->
     <p class="footnote" data-beat="3">Directional ranges, to be validated
       against project data. Only the 90% is observed.</p>
 
@@ -74,12 +77,20 @@
 </section>
 
 <style>
+/* The slide is four short numbers and five short lines, so it was sitting in
+   the top half with a lot of empty space beneath. Open the rhythm up and let
+   it occupy the frame instead of huddling. */
+#s12 .slide-inner { gap: clamp(30px, 6.5vh, 82px); }
+
 /* ---- outcomes: five short lines, the visual centrepiece ---- */
 #s12 .outcomes {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: clamp(10px, 1.2vw, 22px);
 }
+/* The one set of rules kept: these five columns genuinely need separating,
+   and the line above each is what makes them read as a row rather than a
+   paragraph that happens to wrap. */
 #s12 .oc {
   font-family: var(--font-display);
   font-size: var(--t-h2);
@@ -93,19 +104,23 @@
 }
 #s12 .oc em { font-style: normal; color: var(--neu-bright); }
 
-/* ---- numbers ---- */
-#s12 .nums { display: flex; flex-direction: column; gap: var(--sp-4); }
-#s12 .m {
-  padding-top: var(--sp-2);
-  border-top: 1px solid var(--neu-line);
-}
+/* ---- numbers ----
+   No rules here, and no divider above the row. Four cards each carrying a top
+   border, under a full-width rule, under five more borders on the outcomes,
+   was a lot of ruling for a slide with this little content — it read as
+   clutter rather than structure. Provenance already separates the observed
+   figure from the estimates (filled dot, deeper numeral), so the lines were
+   doing no work the type wasn't. Space does the grouping instead. */
+#s12 .nums { display: flex; flex-direction: column; }
+/* Key and provenance sit together, not pushed to opposite edges of the card.
+   With the card rules gone, space-between threw each ESTIMATE across the gutter
+   so it read as belonging to the NEXT metric's key. */
 #s12 .m-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--sp-2);
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: .3em var(--sp-3);
 }
 /* Estimates read a shade quieter than the one number we have actually seen. */
 #s12 .m--est .stat-num { color: var(--neu); }
-#s12 .m--obs { border-top-color: var(--neu); }
 #s12 .m--obs .stat-num { color: var(--neu-bright); }
 
 #s12 .stat-cap { max-width: none; }
@@ -140,10 +155,8 @@
 html.is-light #s12 .oc em { color: var(--neu-ink); }
 html.is-light #s12 .m--est .stat-num { color: var(--neu-ink); }
 html.is-light #s12 .m--obs .stat-num { color: var(--neu-deep); }
-html.is-light #s12 .m--obs { border-top-color: var(--neu-deep); }
 html.is-light #s12 .prov--obs { color: var(--neu-deep); }
-html.is-light #s12 .oc,
-html.is-light #s12 .m { border-top-color: var(--rule-strong); }
+html.is-light #s12 .oc { border-top-color: var(--rule-strong); }
 
 @media (max-width: 900px) {
   #s12 .outcomes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
