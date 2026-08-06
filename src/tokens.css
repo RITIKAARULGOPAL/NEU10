@@ -80,6 +80,78 @@
   --dur:       .62s;
 }
 
+/* ============================================================
+   LIGHT GROUND — opt in per slide with data-theme="light".
+   The engine toggles html.is-light as that slide becomes active
+   (see goto in engine.js), so the whole frame inverts, chrome
+   included, rather than floating a white card on the dark ground.
+
+   Redefining the ink scale here inverts every component at once,
+   because they all read var(--ink*). The accent families keep
+   their hues but drop to darker tiers: --neu-bright and the
+   *-pale steps are tuned for a near-black ground and wash out
+   badly on white.
+   ============================================================ */
+
+html.is-light {
+  --ink:         #15161B;
+  --ink-2:       #454B58;
+  --ink-3:       #5E6674;
+  --ink-4:       #767D8B;
+  --rule:        rgba(20,22,28,.14);
+  --rule-strong: rgba(20,22,28,.24);
+  --fill-subtle: rgba(20,22,28,.06);
+  /* Readable-on-white tiers of the same blue. --neu-deep is the emphatic
+     one, for a figure that must outrank its neighbours. */
+  --neu-ink:     #2C5CC5;
+  --neu-deep:    #1E3F91;
+  --loss-ink:    #B03E22;
+
+  /* The three-tier accent ramps, restated one step darker. Redefining the
+     tokens themselves — rather than overriding each component that uses them
+     — means charts and fills built on the ramp come out right on white with
+     no per-slide colour rules at all. The *-pale steps especially: they are
+     near-white by design, so on white they vanish and a stacked bar reads as
+     shorter than it is. --*-dim / --*-line stay as they are; they are low-
+     alpha washes and work on either ground. */
+  --loss:        #C2461F;
+  --loss-bright: #E4633C;
+  --loss-pale:   #F5A184;
+  --neu:         #2C5CC5;
+  --neu-bright:  #4E7BDA;
+  --neu-pale:    #A9C5FF;
+}
+html.is-light body { background: #FFFFFF; color: var(--ink); }
+/* Both assume a black ground: the grain reads as dirt on white and the
+   glows as smudges. */
+html.is-light body::before,
+html.is-light body::after { display: none; }
+
+/* .h1 and the accent eyebrow have no live var() to catch: .h1 inherits
+   body's colour (inheritance passes the resolved value, not the var
+   reference) and .eyebrow--neu is pinned to the dark-ground blue. */
+html.is-light .h1,
+html.is-light .h-display { color: var(--ink); }
+html.is-light .eyebrow--neu { color: var(--neu-ink); }
+html.is-light .hi-neu { color: var(--neu-ink); }
+html.is-light .hi-loss { color: var(--loss-ink); }
+html.is-light .tag--planned { background: rgba(20,22,28,.04); }
+
+/* Chrome. .wordmark forces --brand to --brand-lift because the true violet
+   is unreadable on black; on white that inversion is exactly wrong, so hand
+   back the real mark colour. */
+html.is-light .wordmark { color: var(--ink); --brand: #361674; }
+html.is-light #counter b { color: var(--ink); }
+html.is-light .beat-dot { background: rgba(20,22,28,.22); }
+html.is-light .beat-dot.is-on { background: var(--neu-ink); }
+html.is-light #progress { background: linear-gradient(90deg, var(--neu-deep), var(--neu-ink)); }
+html.is-light #click-hint kbd { border-color: var(--rule-strong); }
+html.is-light .act-item.is-current { color: var(--ink); }
+html.is-light #play-flag { color: var(--neu-ink); }
+/* Compact docks these on strips painted with --bg. */
+html.is-light #footer-bar { background: #FFFFFF; }
+html.is-light #m-nav { background: linear-gradient(180deg, transparent, #FFF 45%); }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {

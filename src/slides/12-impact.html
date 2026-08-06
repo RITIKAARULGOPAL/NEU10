@@ -1,4 +1,4 @@
-<section class="slide" id="s12" data-act="V"
+<section class="slide" id="s12" data-act="V" data-theme="light"
          data-title="Expected business impact" data-dwell="4400">
   <div class="slide-inner is-wide">
 
@@ -17,8 +17,11 @@
       <p class="oc" style="--i:4"><em>Lower</em> dependency on BIM specialists</p>
     </div>
 
-    <!-- BEATS 3-4 — only then, the numbers. Two at a time; the observed
-         figure lands last, marked apart from the three estimates. -->
+    <!-- BEATS 3-4 — only then, the numbers, two at a time, with the observed
+         figure landing last and marked apart from the three estimates.
+         Captions are the metric itself, not a sentence about it: the reasoning
+         behind each range (which gain rolls up into which, what the licence
+         comparison is against) is the spoken part, not the read part. -->
     <div class="nums">
       <hr class="rule-h" data-beat="3">
       <div class="grid-4">
@@ -29,8 +32,7 @@
             <span class="prov prov--est">ESTIMATE</span>
           </div>
           <p class="stat-num stat-num--sm"><span class="cu" data-to="30" data-at="3">30</span>-50%</p>
-          <p class="stat-cap">reduction in design-to-CD time, rolling up from
-            the library and drafting gains below.</p>
+          <p class="stat-cap">less design-to-CD time</p>
         </div>
 
         <div class="stat m m--est" data-beat="3">
@@ -39,9 +41,7 @@
             <span class="prov prov--est">ESTIMATE</span>
           </div>
           <p class="stat-num stat-num--sm"><span class="cu" data-to="20" data-at="3">20</span>-40%</p>
-          <p class="stat-cap">reduction in licence and infrastructure cost
-            &mdash; one platform against Revit / Rhino plus a plugin stack and
-            separate CD tooling.</p>
+          <p class="stat-cap">lower licence &amp; infrastructure</p>
         </div>
 
         <div class="stat m m--est" data-beat="4">
@@ -50,8 +50,7 @@
             <span class="prov prov--est">ESTIMATE</span>
           </div>
           <p class="stat-num stat-num--sm"><span class="cu" data-to="60" data-at="4">60</span>-70%</p>
-          <p class="stat-cap">fewer specialist hires needed per project, on the
-            back of the lower learning curve.</p>
+          <p class="stat-cap">fewer specialist hires</p>
         </div>
 
         <div class="stat m m--obs" data-beat="4">
@@ -60,20 +59,16 @@
             <span class="prov prov--obs">OBSERVED</span>
           </div>
           <p class="stat-num stat-num--sm"><span class="cu" data-to="90" data-at="4">90</span>%</p>
-          <p class="stat-cap">reduction in parametric library build time</p>
-          <p class="stat-cap m-sub"><span class="prov prov--est">ESTIMATE</span>&mdash;
-            plus 60-80% on CD drafting once automated CD ships.
-            <span class="tag tag--planned">PLANNED</span></p>
+          <p class="stat-cap">faster library build</p>
         </div>
 
       </div>
     </div>
 
-    <p class="footnote" data-beat="3">
-      These are directional placeholder ranges, to be validated against real
-      project data before external use. The 90% library figure is the one drawn
-      from what we&rsquo;ve already observed; the remainder are reasoned estimates.
-    </p>
+    <!-- Shortened, not dropped: the deck never shows a figure without saying
+         where it came from. -->
+    <p class="footnote" data-beat="3">Directional ranges, to be validated
+      against project data. Only the 90% is observed.</p>
 
   </div>
 </section>
@@ -114,17 +109,6 @@
 #s12 .m--obs .stat-num { color: var(--neu-bright); }
 
 #s12 .stat-cap { max-width: none; }
-/* Detached from the OBSERVED headline above it: this card's 90% is measured,
-   but the 60-80% CD figure in this sub-line is not. The rule and the marker
-   stop the card-level OBSERVED badge from appearing to cover both. */
-#s12 .m-sub {
-  color: var(--ink-3);
-  margin-top: var(--sp-2);
-  padding-top: var(--sp-2);
-  border-top: 1px solid var(--rule);
-}
-#s12 .m-sub .tag { vertical-align: baseline; }
-#s12 .m-sub .prov { display: inline-flex; margin-right: .5em; }
 
 /* Provenance mark — filled dot = observed, hollow ring = estimated. */
 #s12 .prov {
@@ -148,6 +132,18 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* Light ground — see data-theme="light" on the section. tokens.css handles the
+   ink scale and chrome; these are s12's own accents, which all sit on the
+   dark-ground blue tiers and would wash out. The observed figure takes the
+   deepest tier so it still outranks the three estimates beside it. */
+html.is-light #s12 .oc em { color: var(--neu-ink); }
+html.is-light #s12 .m--est .stat-num { color: var(--neu-ink); }
+html.is-light #s12 .m--obs .stat-num { color: var(--neu-deep); }
+html.is-light #s12 .m--obs { border-top-color: var(--neu-deep); }
+html.is-light #s12 .prov--obs { color: var(--neu-deep); }
+html.is-light #s12 .oc,
+html.is-light #s12 .m { border-top-color: var(--rule-strong); }
 
 @media (max-width: 900px) {
   #s12 .outcomes { grid-template-columns: repeat(2, minmax(0, 1fr)); }

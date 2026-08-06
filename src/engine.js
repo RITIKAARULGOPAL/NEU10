@@ -224,6 +224,13 @@ const Neu10 = (function () {
     // A scrollable card must always open at the top, never mid-slide.
     next.el.scrollTop = 0;
 
+    /* Per-slide ground. Declared as data-theme="light" on the section rather
+       than toggled from the slide's own enter/leave, so it can't be left
+       switched on by a slide that skips its leave handler — and so the fixed
+       chrome, which lives outside every .slide, inverts with it. */
+    document.documentElement.classList.toggle(
+      'is-light', next.el.dataset.theme === 'light');
+
     applyBeats(next, state.beat);
     if (handlers[next.id] && handlers[next.id].enter) {
       try { handlers[next.id].enter(next.el, state.beat); } catch (e) { console.error(e); }
